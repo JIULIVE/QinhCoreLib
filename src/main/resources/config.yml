@@ -1,0 +1,70 @@
+# QinhCoreLib 配置文件
+# 秦淮系列插件核心库
+
+database:
+  # 数据库类型: sqlite 或 mysql
+  type: sqlite
+  
+  # SQLite配置
+  sqlite:
+    # 数据文件夹路径 (相对于插件目录)
+    data-folder: data
+  
+  # MySQL配置 (可选)
+  mysql:
+    host: localhost
+    port: 3306
+    database: qinhcorelib
+    username: root
+    password: ""
+
+debug:
+  # 是否启用调试模式
+  enabled: false
+  # 调试日志前缀
+  prefix: "[QinhCoreLib-Debug]"
+
+# 经济桥接（Vault / ExcellentEconomy / PlayerPoints）
+economy:
+  # auto: 有 currency 时优先 ExcellentEconomy，否则 Vault，再 PlayerPoints
+  # vault | excellenteconomy | ee | playerpoints | pp
+  default-provider: auto
+  # ExcellentEconomy 默认货币（铜钱 money / 银票 silver / 金契 gold 等，与 EE 配置 id 一致）
+  default-currency: money
+#
+# GUI click-actions 经济动作（value 格式，| 后为失败提示）：
+#   give_money / take_money / set_money
+#   100 | 100:money | excellenteconomy:gold:50 | vault:100 | playerpoints:10
+
+# JavaScript（GraalJS，供 QinhItems / QCR / QinhSkills 等共用）
+# 脚本路径：命名空间:相对路径.js[:函数名]  例 qinhitems:hooks/craft.js:check
+# GUI 条件 type=javascript  动作 type=javascript / run_script
+javascript:
+  enabled: true
+  default-function: main
+  debug:
+    print-stacktrace: false
+
+# 模块配置 (可以禁用不需要的模块)
+modules:
+  config: true
+  database: true
+  reflection: true
+  modelengine: true
+  customcrops: true
+  craftengine: true
+  mythicmobs: true
+  neigeitems: true
+  mmoitems: true
+  gui: true
+  action: true
+  pdc: true
+  item: true
+  hologram: true
+  scheduler: true
+  condition: true
+  expression: true
+  script: true
+  economy: true
+  customblock: true
+  assembly: true

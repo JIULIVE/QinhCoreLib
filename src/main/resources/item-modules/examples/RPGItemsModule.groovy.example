@@ -1,0 +1,35 @@
+package groovy
+
+import com.qinhuai.corelib.api.item.ItemManagerAPI
+import com.qinhuai.corelib.api.item.module.ItemModule
+import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
+import think.rpgitems.Plugin
+import think.rpgitems.api.RPGItems
+
+/**
+ * RPGItems 物品库桥 — 复制为 item-modules/RPGItemsModule.groovy 并去掉 .example 后缀后生效。
+ * 用法：ri-物品名 · rpgi-物品名
+ */
+class RPGItemsModule implements ItemModule {
+
+    static void onGroovyRegister() {
+        def plugin = Plugin.getPlugin(Plugin.class)
+        if (plugin == null) return
+        ItemManagerAPI.instance.register(plugin, new RPGItemsModule(), "ri", "rpgi", "rpgitems")
+    }
+
+    static void onGroovyUnregister() {
+        def plugin = Plugin.getPlugin(Plugin.class)
+        if (plugin != null) {
+            ItemManagerAPI.instance.unregister(plugin)
+        }
+    }
+
+    @Override
+    ItemStack build(Player player, String id) {
+        def item = RPGItems.getRPGItemByName(id)
+        if (item != null) return item.toItemStack()
+        return null
+    }
+}

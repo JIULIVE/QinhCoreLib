@@ -1,0 +1,33 @@
+package groovy
+
+import com.qinhuai.corelib.api.item.ItemManagerAPI
+import com.qinhuai.corelib.api.item.module.ItemModule
+import io.th0rgal.oraxen.OraxenPlugin
+import io.th0rgal.oraxen.api.OraxenItems
+import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
+
+/**
+ * Oraxen 物品库桥 — 复制为 item-modules/OraxenModule.groovy 并去掉 .example 后缀后生效。
+ * 用法：ox-物品id · oraxen-物品id
+ */
+class OraxenModule implements ItemModule {
+
+    static void onGroovyRegister() {
+        def plugin = OraxenPlugin.get()
+        if (plugin == null) return
+        ItemManagerAPI.instance.register(plugin, new OraxenModule(), "ox", "oraxen")
+    }
+
+    static void onGroovyUnregister() {
+        def plugin = OraxenPlugin.get()
+        if (plugin != null) {
+            ItemManagerAPI.instance.unregister(plugin)
+        }
+    }
+
+    @Override
+    ItemStack build(Player player, String id) {
+        return OraxenItems.getItemById(id)?.build()
+    }
+}

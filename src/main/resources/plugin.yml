@@ -1,0 +1,30 @@
+name: QinhCoreLib
+version: '1.0.8'
+main: com.qinhuai.corelib.QinhCoreLib
+api-version: '1.21'
+author: Qinhuai
+description: 秦淮系列插件核心库 — Paper / Purpur / Spigot 1.21.11+，Java 25+（Purpur 26.1 需 JDK 25）
+# Paper/Purpur 从 Maven 拉取 Kotlin（缓存于服务端 libraries 目录），与 QinhItems/QCR 共用同版本
+libraries:
+  - org.jetbrains.kotlin:kotlin-stdlib:2.3.0
+  - org.jetbrains.kotlin:kotlin-reflect:2.3.0
+  - org.graalvm.polyglot:polyglot:${graalvm.polyglot.version}
+  - org.graalvm.js:js-language:${graalvm.polyglot.version}
+  - org.graalvm.regex:regex:${graalvm.polyglot.version}
+  - org.graalvm.truffle:truffle-api:${graalvm.polyglot.version}
+  - org.graalvm.shadowed:icu4j:${graalvm.polyglot.version}
+  - org.apache.groovy:groovy:4.0.24
+softdepend:
+  - Vault
+  - ExcellentEconomy
+  - PlayerPoints
+  - PlaceholderAPI
+  - ModelEngine
+  - CustomCrops
+  - CustomFishing
+  - MythicMobs
+  - NeigeItems
+  - MMOItems
+  - CraftEngine
+  - QinhItems
+  - MagicGem
