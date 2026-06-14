@@ -13,6 +13,8 @@ object ItemSourceBootstrap {
         "mythicmobs" to "MythicMobs",
         "customfishing" to "CustomFishing",
         "magicgem" to "MagicGem",
+        "itemsadder" to "ItemsAdder",
+        "nexo" to "Nexo",
     )
 
     private val allSources: List<ItemSource> = listOf(
@@ -24,6 +26,8 @@ object ItemSourceBootstrap {
         MythicMobsItemSource,
         CustomFishingItemSource,
         MagicGemItemSource,
+        ItemsAdderItemSource,
+        NexoItemSource,
     )
 
     fun registerAll() {

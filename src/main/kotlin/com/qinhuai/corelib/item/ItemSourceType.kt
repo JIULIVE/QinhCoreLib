@@ -9,6 +9,8 @@ enum class ItemSourceType(val id: String, val aliases: List<String>) {
     MYTHICMOBS("mythicmobs", listOf("mythicmobs", "mm", "mythic")),
     CUSTOMFISHING("customfishing", listOf("customfishing", "cf")),
     MAGICGEM("magicgem", listOf("magicgem", "mg", "magic-gem")),
+    ITEMSADDER("itemsadder", listOf("itemsadder", "ia")),
+    NEXO("nexo", listOf("nexo", "nx")),
     ;
 
     companion object {
