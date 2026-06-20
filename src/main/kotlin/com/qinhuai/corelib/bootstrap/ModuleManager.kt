@@ -3,6 +3,7 @@ package com.qinhuai.corelib.bootstrap
 import com.qinhuai.corelib.QinhCoreLib
 import com.qinhuai.corelib.debug.ModuleStatus
 import com.qinhuai.corelib.debug.HealthReport
+import com.qinhuai.corelib.lang.Lang
 import java.util.concurrent.ConcurrentHashMap
 
 class ModuleManager {
@@ -25,11 +26,11 @@ class ModuleManager {
 
     fun healthReport(): HealthReport {
         val failed = loadStatus.values.firstOrNull { !it.available || !it.enabled }
-            ?: return HealthReport.healthy("模块均正常")
+            ?: return HealthReport.healthy(Lang.get("module-manager.all-healthy"))
         return HealthReport.degraded(
             code = if (!failed.available) "MODULE_UNAVAILABLE" else "MODULE_DISABLED",
-            message = "模块状态异常: ${failed.name}",
-            suggestion = failed.message.ifBlank { "检查模块依赖与启动日志" },
+            message = Lang.get("module-manager.module-abnormal", "name" to failed.name),
+            suggestion = failed.message.ifBlank { Lang.get("module-manager.check-deps-logs") },
         )
     }
 
@@ -41,21 +42,21 @@ class ModuleManager {
             try {
                 module.load()
                 loadedModules.add(module)
-                loadStatus[module.name] = ModuleStatus(module.name, enabled = false, available = true, message = "已加载")
+                loadStatus[module.name] = ModuleStatus(module.name, enabled = false, available = true, message = Lang.get("common.loaded"))
             } catch (e: Exception) {
-                QinhCoreLib.instance.logger.severe("[QinhCoreLib] 加载模块失败: ${module.name}")
+                QinhCoreLib.instance.logger.severe(Lang.get("module-manager.load-failed", "name" to module.name))
                 e.printStackTrace()
-                loadStatus[module.name] = ModuleStatus(module.name, enabled = false, available = false, message = e.message ?: "加载失败")
+                loadStatus[module.name] = ModuleStatus(module.name, enabled = false, available = false, message = e.message ?: Lang.get("module-manager.load-failed-short"))
             }
         }
         loadedModules.forEach { module ->
             try {
                 module.enable()
-                loadStatus[module.name] = ModuleStatus(module.name, enabled = true, available = true, message = "已启用")
+                loadStatus[module.name] = ModuleStatus(module.name, enabled = true, available = true, message = Lang.get("module-manager.enabled"))
             } catch (e: Exception) {
-                QinhCoreLib.instance.logger.severe("[QinhCoreLib] 启用模块失败: ${module.name}")
+                QinhCoreLib.instance.logger.severe(Lang.get("module-manager.enable-failed", "name" to module.name))
                 e.printStackTrace()
-                loadStatus[module.name] = ModuleStatus(module.name, enabled = false, available = true, message = e.message ?: "启用失败")
+                loadStatus[module.name] = ModuleStatus(module.name, enabled = false, available = true, message = e.message ?: Lang.get("module-manager.enable-failed-short"))
             }
         }
     }
@@ -64,21 +65,21 @@ class ModuleManager {
         loadedModules.reversed().forEach { module ->
             try {
                 module.disable()
-                loadStatus[module.name] = ModuleStatus(module.name, enabled = false, available = true, message = "已禁用")
+                loadStatus[module.name] = ModuleStatus(module.name, enabled = false, available = true, message = Lang.get("module-manager.disabled"))
             } catch (e: Exception) {
-                QinhCoreLib.instance.logger.severe("[QinhCoreLib] 禁用模块失败: ${module.name}")
+                QinhCoreLib.instance.logger.severe(Lang.get("module-manager.disable-failed", "name" to module.name))
                 e.printStackTrace()
-                loadStatus[module.name] = ModuleStatus(module.name, enabled = false, available = true, message = e.message ?: "禁用失败")
+                loadStatus[module.name] = ModuleStatus(module.name, enabled = false, available = true, message = e.message ?: Lang.get("module-manager.disable-failed-short"))
             }
         }
         loadedModules.reversed().forEach { module ->
             try {
                 module.unload()
-                loadStatus[module.name] = ModuleStatus(module.name, enabled = false, available = false, message = "已卸载")
+                loadStatus[module.name] = ModuleStatus(module.name, enabled = false, available = false, message = Lang.get("common.unloaded"))
             } catch (e: Exception) {
-                QinhCoreLib.instance.logger.severe("[QinhCoreLib] 卸载模块失败: ${module.name}")
+                QinhCoreLib.instance.logger.severe(Lang.get("module-manager.unload-failed", "name" to module.name))
                 e.printStackTrace()
-                loadStatus[module.name] = ModuleStatus(module.name, enabled = false, available = false, message = e.message ?: "卸载失败")
+                loadStatus[module.name] = ModuleStatus(module.name, enabled = false, available = false, message = e.message ?: Lang.get("module-manager.unload-failed-short"))
             }
         }
         loadedModules.clear()

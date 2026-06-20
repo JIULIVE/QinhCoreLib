@@ -1,0 +1,192 @@
+attack_damage:
+  display_name: "Daño de Ataque"
+  prefix: ""
+  suffix: ""
+attack_speed:
+  display_name: "Velocidad de Ataque"
+  prefix: ""
+  suffix: ""
+physical_damage:
+  display_name: "Daño Físico"
+  prefix: ""
+  suffix: "%"
+physical_crit_rate:
+  display_name: "Tasa de Crítico Físico"
+  prefix: ""
+  suffix: "%"
+physical_crit_damage:
+  display_name: "Daño Crítico Físico"
+  prefix: ""
+  suffix: "%"
+armor_penetration:
+  display_name: "Penetración de Armadura"
+  prefix: ""
+  suffix: ""
+projectile_damage:
+  display_name: "Daño de Proyectil"
+  prefix: ""
+  suffix: "%"
+magic_attack:
+  display_name: "Ataque Mágico"
+  prefix: ""
+  suffix: ""
+magic_damage:
+  display_name: "Daño Mágico"
+  prefix: ""
+  suffix: "%"
+magic_crit_rate:
+  display_name: "Tasa de Crítico Mágico"
+  prefix: ""
+  suffix: "%"
+magic_crit_damage:
+  display_name: "Daño Crítico Mágico"
+  prefix: ""
+  suffix: "%"
+magic_penetration:
+  display_name: "Penetración Mágica"
+  prefix: ""
+  suffix: ""
+skill_attack:
+  display_name: "Ataque de Habilidad"
+  prefix: ""
+  suffix: ""
+skill_damage:
+  display_name: "Daño de Habilidad"
+  prefix: ""
+  suffix: "%"
+skill_crit_rate:
+  display_name: "Tasa de Crítico de Habilidad"
+  prefix: ""
+  suffix: "%"
+skill_crit_damage:
+  display_name: "Daño Crítico de Habilidad"
+  prefix: ""
+  suffix: "%"
+true_attack:
+  display_name: "Daño Verdadero"
+  prefix: ""
+  suffix: ""
+true_damage:
+  display_name: "Bonificación de Daño Verdadero"
+  prefix: ""
+  suffix: "%"
+pvp_damage:
+  display_name: "Daño PvP"
+  prefix: ""
+  suffix: "%"
+pve_damage:
+  display_name: "Daño PvE"
+  prefix: ""
+  suffix: "%"
+pvp_defense:
+  display_name: "Defensa PvP"
+  prefix: ""
+  suffix: "%"
+pve_defense:
+  display_name: "Defensa PvE"
+  prefix: ""
+  suffix: "%"
+defense:
+  display_name: "Defensa"
+  prefix: ""
+  suffix: ""
+damage_reduction:
+  display_name: "Reducción de Daño"
+  prefix: ""
+  suffix: "%"
+dodge:
+  display_name: "Esquiva"
+  prefix: ""
+  suffix: "%"
+block_rate:
+  display_name: "Tasa de Bloqueo"
+  prefix: ""
+  suffix: "%"
+parry:
+  display_name: "Parada"
+  prefix: ""
+  suffix: "%"
+crit_resist:
+  display_name: "Resistencia a Críticos"
+  prefix: ""
+  suffix: "%"
+armor:
+  display_name: "Armadura"
+  prefix: ""
+  suffix: ""
+armor_toughness:
+  display_name: "Dureza de Armadura"
+  prefix: ""
+  suffix: ""
+knockback_resistance:
+  display_name: "Resistencia al Empuje"
+  prefix: ""
+  suffix: "%"
+health:
+  display_name: "Salud"
+  prefix: ""
+  suffix: ""
+health_regen:
+  display_name: "Regeneración de Salud"
+  prefix: ""
+  suffix: ""
+max_mana:
+  display_name: "Maná Máximo"
+  prefix: ""
+  suffix: ""
+mana_regen:
+  display_name: "Regeneración de Maná"
+  prefix: ""
+  suffix: ""
+max_stamina:
+  display_name: "Vigor Máximo"
+  prefix: ""
+  suffix: ""
+stamina_regen:
+  display_name: "Regeneración de Vigor"
+  prefix: ""
+  suffix: ""
+movement_speed:
+  display_name: "Velocidad de Movimiento"
+  prefix: ""
+  suffix: ""
+max_absorption:
+  display_name: "Absorción Máxima"
+  prefix: ""
+  suffix: ""
+luck:
+  display_name: "Suerte"
+  prefix: ""
+  suffix: ""
+lifesteal:
+  display_name: "Robo de Vida"
+  prefix: ""
+  suffix: "%"
+spell_vampirism:
+  display_name: "Vampirismo de Hechizos"
+  prefix: ""
+  suffix: "%"
+reflection:
+  display_name: "Reflejo"
+  prefix: ""
+  suffix: "%"
+cooldown_reduction:
+  display_name: "Reducción de Enfriamiento"
+  prefix: ""
+  suffix: "%"
+exp_bonus:
+  display_name: "Bonificación de EXP"
+  prefix: ""
+  suffix: "%"
+loot_bonus:
+  display_name: "Bonificación de Botín"
+  prefix: ""
+  suffix: "%"
+money_bonus:
+  display_name: "Bonificación de Dinero"
+  prefix: ""
+  suffix: "%"
+attack_knockback:
+  display_name: "Empuje de Ataque"
+  prefix: ""
+  suffix: ""

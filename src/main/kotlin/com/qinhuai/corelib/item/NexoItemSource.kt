@@ -12,4 +12,6 @@ object NexoItemSource : ItemSource {
     }
 
     override fun isAvailable(): Boolean = NexoBridge.isAvailable()
+
+    override fun identify(stack: ItemStack): String? = NexoBridge.idFromItem(stack)
 }

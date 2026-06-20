@@ -4,6 +4,7 @@ import com.qinhuai.corelib.debug.BridgeDiagnostics
 import com.qinhuai.corelib.debug.BridgeStatus
 import com.qinhuai.corelib.debug.BridgeStatusRegistry
 import com.qinhuai.corelib.debug.DiagnosticResult
+import com.qinhuai.corelib.lang.Lang
 import org.bukkit.inventory.ItemStack
 
 object NeigeItemsBridge {
@@ -52,9 +53,9 @@ object NeigeItemsBridge {
     }
 
     fun status(): BridgeStatus = if (available == true) {
-        BridgeDiagnostics.available("NeigeItems", source = "NeigeItems", hint = "反射绑定成功")
+        BridgeDiagnostics.available("NeigeItems", source = "NeigeItems", hint = Lang.get("neige-items-bridge.reflect-bound"))
     } else {
-        BridgeDiagnostics.unavailable("NeigeItems", source = "NeigeItems", hint = "未检测到 NeigeItems 或反射失败")
+        BridgeDiagnostics.unavailable("NeigeItems", source = "NeigeItems", hint = Lang.get("neige-items-bridge.not-detected"))
     }
 
     fun diagnose(): DiagnosticResult<BridgeStatus> = BridgeDiagnostics.diagnose("NeigeItems", isAvailable(), source = "NeigeItems", hint = "itemManager=${itemManagerInstance != null}")

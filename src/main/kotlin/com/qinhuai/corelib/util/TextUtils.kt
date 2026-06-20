@@ -1,5 +1,7 @@
 package com.qinhuai.corelib.util
 
+import com.qinhuai.corelib.lang.Lang
+
 object TextUtils {
     
     fun formatNumber(num: Double, decimalPlaces: Int = 1): String {
@@ -17,9 +19,9 @@ object TextUtils {
         val seconds = totalSeconds % 60
         
         return when {
-            hours > 0 -> String.format("%d时%d分%d秒", hours, minutes, seconds)
-            minutes > 0 -> String.format("%d分%d秒", minutes, seconds)
-            else -> String.format("%d秒", seconds)
+            hours > 0 -> String.format(Lang.get("text-utils.time-hms"), hours, minutes, seconds)
+            minutes > 0 -> String.format(Lang.get("text-utils.time-ms"), minutes, seconds)
+            else -> String.format(Lang.get("text-utils.time-s"), seconds)
         }
     }
     
@@ -36,7 +38,7 @@ object TextUtils {
         }
     }
     
-    fun joinList(list: List<String>, separator: String = ", ", lastSeparator: String = " 和 "): String {
+    fun joinList(list: List<String>, separator: String = ", ", lastSeparator: String = Lang.get("text-utils.list-and-separator")): String {
         return when (list.size) {
             0 -> ""
             1 -> list[0]

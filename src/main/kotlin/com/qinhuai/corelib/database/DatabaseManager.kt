@@ -4,6 +4,7 @@ import com.qinhuai.corelib.QinhCoreLib
 import com.qinhuai.corelib.debug.BridgeStatus
 import com.qinhuai.corelib.debug.BridgeStatusRegistry
 import com.qinhuai.corelib.debug.DiagnosticResult
+import com.qinhuai.corelib.lang.Lang
 import org.bukkit.Location
 import org.bukkit.inventory.ItemStack
 import java.io.File
@@ -97,7 +98,7 @@ abstract class QclDatabase {
             }
             dataInput.close()
         } catch (e: Exception) {
-            QinhCoreLib.instance.logger.warning("还原背包数据失败: ${e.message}")
+            QinhCoreLib.instance.logger.warning(Lang.get("database-manager.restore-inventory-failed", "error" to e.message))
         }
         return target
     }
@@ -129,7 +130,7 @@ class SQLiteDatabase(
         available = true,
         enabled = true,
         source = "Database",
-        message = "SQLite 数据库可用",
+        message = Lang.get("database-manager.sqlite-available"),
         recoverable = true,
     )
 
@@ -166,7 +167,7 @@ class MySQLDatabase(
         available = true,
         enabled = true,
         source = "Database",
-        message = "MySQL 数据库可用",
+        message = Lang.get("database-manager.mysql-available"),
         recoverable = true,
     )
 
@@ -211,7 +212,7 @@ object DatabaseManager {
             available = database != null,
             enabled = database != null,
             source = "Database",
-            message = if (database != null) "SQLite 数据库已初始化" else "SQLite 未初始化",
+            message = if (database != null) Lang.get("database-manager.sqlite-initialized") else Lang.get("database-manager.sqlite-not-initialized"),
             recoverable = true,
         )
         DatabaseType.MYSQL -> BridgeStatus(
@@ -219,7 +220,7 @@ object DatabaseManager {
             available = database != null,
             enabled = database != null,
             source = "Database",
-            message = if (database != null) "MySQL 数据库已初始化" else "MySQL 未初始化",
+            message = if (database != null) Lang.get("database-manager.mysql-initialized") else Lang.get("database-manager.mysql-not-initialized"),
             recoverable = true,
         )
     }

@@ -4,6 +4,7 @@ import com.qinhuai.corelib.debug.BridgeDiagnostics
 import com.qinhuai.corelib.debug.BridgeStatus
 import com.qinhuai.corelib.debug.BridgeStatusRegistry
 import com.qinhuai.corelib.debug.DiagnosticResult
+import com.qinhuai.corelib.lang.Lang
 import org.bukkit.inventory.ItemStack
 
 object MMOItemsBridge {
@@ -82,12 +83,12 @@ object MMOItemsBridge {
     }
 
     fun status(): BridgeStatus = if (available == true) {
-        BridgeDiagnostics.available("MMOItems", source = "MMOItems", hint = "反射绑定成功")
+        BridgeDiagnostics.available("MMOItems", source = "MMOItems", hint = Lang.get("mmoitems-bridge.reflection-bound"))
     } else {
-        BridgeDiagnostics.unavailable("MMOItems", source = "MMOItems", hint = "未检测到 MMOItems 或反射失败")
+        BridgeDiagnostics.unavailable("MMOItems", source = "MMOItems", hint = Lang.get("mmoitems-bridge.not-detected"))
     }
 
-    fun diagnose(): DiagnosticResult<BridgeStatus> = BridgeDiagnostics.diagnose("MMOItems", isAvailable(), source = "MMOItems", hint = "type API bound=${getTypesMethod != null}")
+    fun diagnose(): DiagnosticResult<BridgeStatus> = BridgeDiagnostics.diagnose("MMOItems", isAvailable(), source = "MMOItems", hint = Lang.get("mmoitems-bridge.type-api-bound", "bound" to (getTypesMethod != null)))
 }
 
 object MMOItemsManager {

@@ -7,9 +7,6 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 import java.util.function.Supplier
 
-/**
- * Bukkit 任务调度。公开 API 使用 [Runnable] / [Supplier]，避免子插件与 CoreLib 各自加载 Kotlin 时的 [LinkageError]。
- */
 object TaskScheduler {
 
     fun runSync(block: Runnable): BukkitTask? {

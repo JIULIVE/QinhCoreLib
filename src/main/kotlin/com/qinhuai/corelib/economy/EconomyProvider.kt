@@ -2,10 +2,6 @@ package com.qinhuai.corelib.economy
 
 import org.bukkit.OfflinePlayer
 
-/**
- * 经济后端（Vault / ExcellentEconomy 等）。
- * [currencyId] 对 Vault 可忽略；对 ExcellentEconomy 必填（如 money、silver、gold）。
- */
 interface EconomyProvider {
     val id: String
 

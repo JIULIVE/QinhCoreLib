@@ -12,9 +12,6 @@ interface Action {
     fun execute(context: ActionContext)
 }
 
-/**
- * 统一动作语义上下文：支持执行变量、追踪、输入输出数据。
- */
 data class ActionContext(
     val player: Player? = null,
     val variables: MutableMap<String, Any> = mutableMapOf(),
@@ -35,9 +32,6 @@ data class ActionContext(
         TraceBuilder(traceId, subjectType, subjectId)
 }
 
-/**
- * DSL 执行单元：由 compile -> validate -> optimize -> execute -> trace 组成。
- */
 data class ActionNode(
     val id: String,
     val kind: String,

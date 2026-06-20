@@ -1,0 +1,6 @@
+api-jar-diagnostics.manifest-generated: "公開API包清單已產生"
+api-jar-diagnostics.boundary-generated: "公開API類清單已產生"
+api-jar-diagnostics.filter-hint: "建置時應僅包含 manifest 公開包"
+api-jar-diagnostics.internal-packages-declared: "內部包已宣告，用於過濾與稽核"
+config-diagnostics.not-loaded: "未載入"
+startup-diagnostics.summary-generated: "啟動摘要已產生"

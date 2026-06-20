@@ -1,0 +1,6 @@
+api-jar-diagnostics.manifest-generated: "Manifiesto de paquetes de API pública generado"
+api-jar-diagnostics.boundary-generated: "Manifiesto de clases de API pública generado"
+api-jar-diagnostics.filter-hint: "La compilación debe incluir solo los paquetes públicos del manifiesto"
+api-jar-diagnostics.internal-packages-declared: "Paquetes internos declarados, usados para filtrado y auditoría"
+config-diagnostics.not-loaded: "No cargado"
+startup-diagnostics.summary-generated: "Resumen de arranque generado"

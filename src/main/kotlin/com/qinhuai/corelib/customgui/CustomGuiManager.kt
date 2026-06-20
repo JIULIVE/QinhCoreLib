@@ -82,9 +82,6 @@ object CustomGuiManager {
         return gui
     }
 
-    /**
-     * 打开由代码绘制的动态 GUI（与 YAML 配置的 [openGui] 共用同一套监听与点击节流）。
-     */
     fun openDynamic(
         player: Player,
         rows: Int,

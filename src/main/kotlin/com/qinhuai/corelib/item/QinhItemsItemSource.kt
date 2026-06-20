@@ -3,10 +3,6 @@ package com.qinhuai.corelib.item
 import org.bukkit.Bukkit
 import org.bukkit.inventory.ItemStack
 
-/**
- * 软依赖 QinhItems；插件未加载时不可用。
- * QI 启用后也可自行 register 覆盖本实现。
- */
 object QinhItemsItemSource : ItemSource {
     override val id: String = "qinhitems"
 
@@ -21,6 +17,17 @@ object QinhItemsItemSource : ItemSource {
             val registry = Class.forName("com.qinhuai.items.item.QinhItemRegistry")
             registry.getMethod("create", String::class.java, Int::class.javaPrimitiveType)
                 .invoke(null, id, amount) as? ItemStack
+        } catch (_: Throwable) {
+            null
+        }
+    }
+
+    override fun identify(stack: ItemStack): String? {
+        if (!isAvailable()) return null
+        return try {
+            val tags = Class.forName("com.qinhuai.items.item.QinhItemTags")
+            val instance = tags.getField("INSTANCE").get(null)
+            tags.getMethod("getId", ItemStack::class.java).invoke(instance, stack) as? String
         } catch (_: Throwable) {
             null
         }

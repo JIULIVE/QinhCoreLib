@@ -18,4 +18,11 @@ object CraftEngineItemSource : ItemSource {
     override fun isAvailable(): Boolean {
         return CraftEngineManager.isAvailable()
     }
+
+    override fun identify(stack: ItemStack): String? = CraftEngineManager.getCustomItemId(stack)
+
+    override fun matches(stack: ItemStack, id: String): Boolean {
+        val normalized = if (id.contains(':')) id else id.replaceFirst("_", ":")
+        return identify(stack) == normalized
+    }
 }

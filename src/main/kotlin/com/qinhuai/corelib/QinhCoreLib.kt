@@ -43,9 +43,10 @@ class QinhCoreLib : JavaPlugin() {
         }
 
         StartupReporter.reset()
-        logger.info("§6[QinhCoreLib] §e秦淮核心库 v${pluginMeta.version} 启用中…")
 
         saveDefaultConfig()
+        com.qinhuai.corelib.lang.Lang.load()
+        com.qinhuai.corelib.lang.Lang.log(com.qinhuai.corelib.lang.Lang.get("startup.enabling", "version" to pluginMeta.version))
 
         com.qinhuai.corelib.economy.EconomyBridge.init(this)
         com.qinhuai.corelib.script.QinhScriptBridge.init(this)
@@ -69,16 +70,18 @@ class QinhCoreLib : JavaPlugin() {
 
     override fun onDisable() {
         unloadModulesIfInitialized()
-        logger.info("[QinhCoreLib] 已卸载")
+        logger.info("[QinhCoreLib] " + com.qinhuai.corelib.lang.Lang.get("startup.disabled"))
     }
 
     fun reloadPluginConfig() {
         reloadConfig()
+        com.qinhuai.corelib.lang.Lang.load()
         com.qinhuai.corelib.economy.EconomyBridge.init(this)
         com.qinhuai.corelib.script.QinhScriptBridge.reload()
+        com.qinhuai.corelib.attribute.AttributeModule.reloadConfig()
         ItemManagerBootstrap.reloadExternalModules(this)
         CustomGuiManager.loadAllGuis()
         StartupReporter.setGuiCount(CustomGuiManager.loadedGuiCount())
-        logger.info("[QinhCoreLib] 配置已重载")
+        logger.info("[QinhCoreLib] " + com.qinhuai.corelib.lang.Lang.get("startup.config-reloaded"))
     }
 }

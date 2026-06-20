@@ -2,16 +2,6 @@ package com.qinhuai.corelib.economy
 
 import java.util.Locale
 
-/**
- * 解析 GUI / 动作里的经济参数。
- *
- * 支持格式（`|` 后为失败提示，可选）：
- * - `100`
- * - `100:money`
- * - `excellenteconomy:gold:100`
- * - `vault:50`
- * - `playerpoints:100`
- */
 data class EconomyActionSpec(
     val amount: Double,
     val providerId: String?,

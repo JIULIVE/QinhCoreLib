@@ -1,0 +1,192 @@
+attack_damage:
+  display_name: "攻擊力"
+  prefix: ""
+  suffix: ""
+attack_speed:
+  display_name: "攻擊速度"
+  prefix: ""
+  suffix: ""
+physical_damage:
+  display_name: "物理增傷"
+  prefix: ""
+  suffix: "%"
+physical_crit_rate:
+  display_name: "物理暴擊率"
+  prefix: ""
+  suffix: "%"
+physical_crit_damage:
+  display_name: "物理爆傷"
+  prefix: ""
+  suffix: "%"
+armor_penetration:
+  display_name: "護甲穿透"
+  prefix: ""
+  suffix: ""
+projectile_damage:
+  display_name: "投擲物增傷"
+  prefix: ""
+  suffix: "%"
+magic_attack:
+  display_name: "法術傷害"
+  prefix: ""
+  suffix: ""
+magic_damage:
+  display_name: "法術增傷"
+  prefix: ""
+  suffix: "%"
+magic_crit_rate:
+  display_name: "法術暴擊率"
+  prefix: ""
+  suffix: "%"
+magic_crit_damage:
+  display_name: "法術爆傷"
+  prefix: ""
+  suffix: "%"
+magic_penetration:
+  display_name: "法術穿透"
+  prefix: ""
+  suffix: ""
+skill_attack:
+  display_name: "技能傷害"
+  prefix: ""
+  suffix: ""
+skill_damage:
+  display_name: "技能增傷"
+  prefix: ""
+  suffix: "%"
+skill_crit_rate:
+  display_name: "技能暴擊率"
+  prefix: ""
+  suffix: "%"
+skill_crit_damage:
+  display_name: "技能爆傷"
+  prefix: ""
+  suffix: "%"
+true_attack:
+  display_name: "真實傷害"
+  prefix: ""
+  suffix: ""
+true_damage:
+  display_name: "真傷增傷"
+  prefix: ""
+  suffix: "%"
+pvp_damage:
+  display_name: "PVP傷害"
+  prefix: ""
+  suffix: "%"
+pve_damage:
+  display_name: "PVE傷害"
+  prefix: ""
+  suffix: "%"
+pvp_defense:
+  display_name: "PVP防禦"
+  prefix: ""
+  suffix: "%"
+pve_defense:
+  display_name: "PVE防禦"
+  prefix: ""
+  suffix: "%"
+defense:
+  display_name: "防禦"
+  prefix: ""
+  suffix: ""
+damage_reduction:
+  display_name: "傷害減免"
+  prefix: ""
+  suffix: "%"
+dodge:
+  display_name: "閃避率"
+  prefix: ""
+  suffix: "%"
+block_rate:
+  display_name: "格擋率"
+  prefix: ""
+  suffix: "%"
+parry:
+  display_name: "招架率"
+  prefix: ""
+  suffix: "%"
+crit_resist:
+  display_name: "暴擊抗性"
+  prefix: ""
+  suffix: "%"
+armor:
+  display_name: "護甲值"
+  prefix: ""
+  suffix: ""
+armor_toughness:
+  display_name: "護甲韌性"
+  prefix: ""
+  suffix: ""
+knockback_resistance:
+  display_name: "擊退抗性"
+  prefix: ""
+  suffix: "%"
+health:
+  display_name: "生命"
+  prefix: ""
+  suffix: ""
+health_regen:
+  display_name: "生命恢復"
+  prefix: ""
+  suffix: ""
+max_mana:
+  display_name: "最大法力"
+  prefix: ""
+  suffix: ""
+mana_regen:
+  display_name: "法力恢復"
+  prefix: ""
+  suffix: ""
+max_stamina:
+  display_name: "最大耐力"
+  prefix: ""
+  suffix: ""
+stamina_regen:
+  display_name: "耐力恢復"
+  prefix: ""
+  suffix: ""
+movement_speed:
+  display_name: "移動速度"
+  prefix: ""
+  suffix: ""
+max_absorption:
+  display_name: "最大吸收"
+  prefix: ""
+  suffix: ""
+luck:
+  display_name: "幸運"
+  prefix: ""
+  suffix: ""
+lifesteal:
+  display_name: "生命偷取"
+  prefix: ""
+  suffix: "%"
+spell_vampirism:
+  display_name: "法術吸血"
+  prefix: ""
+  suffix: "%"
+reflection:
+  display_name: "傷害反彈"
+  prefix: ""
+  suffix: "%"
+cooldown_reduction:
+  display_name: "冷卻縮減"
+  prefix: ""
+  suffix: "%"
+exp_bonus:
+  display_name: "經驗加成"
+  prefix: ""
+  suffix: "%"
+loot_bonus:
+  display_name: "掉落加成"
+  prefix: ""
+  suffix: "%"
+money_bonus:
+  display_name: "金幣加成"
+  prefix: ""
+  suffix: "%"
+attack_knockback:
+  display_name: "攻擊擊退"
+  prefix: ""
+  suffix: ""

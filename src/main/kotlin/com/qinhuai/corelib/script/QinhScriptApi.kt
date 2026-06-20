@@ -5,7 +5,10 @@ import com.qinhuai.corelib.item.ItemSourceManager
 import com.qinhuai.corelib.placeholder.PapiBridge
 import com.qinhuai.corelib.scheduler.TaskScheduler
 import org.bukkit.Bukkit
+import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
 import org.graalvm.polyglot.HostAccess
 import java.util.concurrent.CompletableFuture
 
@@ -94,6 +97,38 @@ class QinhScriptApi(
         stack.amount = amount.coerceAtLeast(1)
         player.inventory.addItem(stack)
         return true
+    }
+
+    @HostAccess.Export
+    fun heal(amount: Double): Boolean {
+        val player = context.player ?: return false
+        if (!amount.isFinite() || amount <= 0.0) return false
+        val maxHealth = org.bukkit.Registry.ATTRIBUTE.get(org.bukkit.NamespacedKey.minecraft("max_health"))
+            ?.let { player.getAttribute(it)?.value } ?: 20.0
+        player.health = (player.health + amount).coerceIn(0.0, maxHealth)
+        return true
+    }
+
+    @HostAccess.Export
+    fun damage(target: Any?, amount: Double): Boolean {
+        val victim = target as? LivingEntity ?: return false
+        if (!amount.isFinite() || amount <= 0.0) return false
+        val source = context.player
+        return runCatching {
+            if (source != null && source !== victim) victim.damage(amount, source) else victim.damage(amount)
+            true
+        }.getOrDefault(false)
+    }
+
+    @Suppress("DEPRECATION")
+    @HostAccess.Export
+    fun addPotion(target: Any?, type: String, durationTicks: Int, amplifier: Int): Boolean {
+        val entity = target as? LivingEntity ?: return false
+        val effectType = PotionEffectType.getByName(type.trim().uppercase()) ?: return false
+        return runCatching {
+            entity.addPotionEffect(PotionEffect(effectType, durationTicks.coerceAtLeast(1), amplifier.coerceAtLeast(0)))
+            true
+        }.getOrDefault(false)
     }
 
     @HostAccess.Export

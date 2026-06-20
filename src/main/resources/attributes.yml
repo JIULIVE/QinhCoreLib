@@ -1,0 +1,94 @@
+# ============================================================
+# QinhCoreLib 属性「功能」配置 · attributes.yml
+# ============================================================
+# 这里管【新增属性 + 属性功能】（大类/伤害类型/JS钩子/上下限/战力）。改完 /qcl reload 生效。
+#
+#   ★★ 想改属性在物品 lore 上的【显示名 / 图标 / 单位】？不在这里！
+#      去隔壁  lang/attributes.yml  改（每个属性 display_name / prefix / suffix 三字段，更清晰）。
+#
+# 内置属性已写死在代码里，无需在此声明；本文件只用来：新增自定义属性，或微调某内置的功能字段。
+#
+# 顶层固定为 attributes，每个子键 = 一个属性的 canonical key（英文小写下划线）。
+#
+# ★ 覆盖内置属性：子键写成内置的 key（如 physical_crit_rate），只填你想改的字段
+#   （如只写 display / prefix），其余（大类/伤害类型/战力权重…）自动继承内置、不会丢。
+#   英文 key 永远不变，只换显示。这点和 MMOItems 一致。
+#   例：把"物理暴击率"改成"暴击"并加贴图前缀——
+#     physical_crit_rate:
+#       display: 暴击
+#       prefix: '&f'      # 资源包 16px 贴图字符;物品 lore 会渲染成: 贴图 暴击 + 20%
+#
+# 每个属性可配字段：
+#   display : 显示名（中文，物品 lore / AP 也用此名匹配）。默认 = key
+#   prefix  : 显示名前缀（一般放资源包 16px 贴图字符 \uXXXX）。默认无。
+#             物品 lore 渲染格式：  {prefix}{display} + 数值/区间   例: 物理伤害 + 11.5 - 15.0
+#   category: 所属大类（物理伤害 / 技能伤害 / 魔法伤害 / 减伤 / 资源 / 通用 / 杂项，
+#             也可自定义新大类）。用于 /qcl attr list 与属性 GUI 分组。默认 = 杂项
+#   vanilla : 映射到的原版属性键（max_health / movement_speed / armor /
+#             armor_toughness / attack_speed / knockback_resistance / luck 等）。
+#             配了就走原版 AttributeModifier（生命/护甲/移速这类原版能表达的）。
+#   type    : 伤害类型（physical / magic / skill / true），大类增伤属性用。
+#   mitigation: 是否为「减伤类」属性（true 时会被真实伤害穿透；如防御/伤害减免）。默认 false
+#   combat-power: 战斗力权重（玩家战力 = Σ 属性值 × 权重）。默认 1.0
+#   min / max : 数值上下限钳制（平衡工具，如概率类 max: 1.0）。默认无限制
+#   message   : 触发时给玩家的战斗提示（支持 {damage} {value} 占位）。默认无
+#   order   : 钩子执行顺序，越小越先跑（暴击=10，反伤/吸血建议靠后如 100）。
+#   hooks   : JS 钩子，事件名 → 脚本引用。脚本放 plugins/QinhCoreLib/scripts/attributes/*.js
+#             事件名：
+#               on_damage_dealt  造成伤害时（脚本返回新伤害值）
+#               on_damage_taken  受到伤害时（脚本返回新伤害值）
+#               on_kill          击杀实体时
+#               on_tick          每 20 tick（需 QI 在装备扫描末尾调 refreshEquipHooks）
+#               on_equip         装备该属性物品时
+#               on_unequip       卸下时
+#             引用格式：qinhcorelib:attributes/<文件名>.js:<函数名>
+#
+# 脚本里可用的接口（ctx = 当前上下文，qcl = 工具 API）：
+#   ctx.get("damage" / "value" / "attacker" / "victim" / 任意属性 key)
+#   ctx.set(key, value)
+#   qcl.heal(amount)                                    治疗自己
+#   qcl.damage(entity, amount)                          对实体造成伤害
+#   qcl.addPotion(entity, "SLOWNESS", ticks, amplifier) 施加药水效果
+#   qcl.placeholder(text) / qcl.logInfo(msg) / qcl.itemGive(ref, amount) ...
+#
+# ------------------------------------------------------------
+# 下面是范例（默认全部注释、不激活）。取消注释 + /qcl reload 即启用。
+# ------------------------------------------------------------
+attributes:
+#  # 荆棘反伤：受击时把一部分伤害反弹给攻击者（已附带 scripts/attributes/thorns.js）
+#  thorns:
+#    display: 荆棘
+#    category: 减伤
+#    order: 100
+#    hooks:
+#      on_damage_taken: qinhcorelib:attributes/thorns.js:onDamageTaken
+#
+#  # 迅捷：直接映射原版移动速度，无需脚本
+#  swiftness:
+#    display: 迅捷
+#    vanilla: movement_speed
+#
+#  # ════════ 覆盖内置示例：把"物理暴击率"改名为"暴击"并挂资源包贴图 ════════
+#  physical_crit_rate:
+#    display: 暴击
+#    prefix: ""      # 你资源包里的 16px 贴图字符；物品 lore 会渲染成: [贴图] 暴击 + 20%
+
+# ════════════════════════════════════════════════════════════
+#  内置属性总表（key → 当前显示名）
+#  想改名/加贴图：在上面 attributes: 下写  <key>:  再填 display / prefix 即可，
+#  其余字段（大类/伤害类型/战力/上下限）自动继承内置、不用写。
+#  ── 元素属性（火/水/雷/风/土/冰…）由 elements.yml 驱动，名字是 <元素>伤害/<元素>增伤/<元素>抗性 ──
+# ════════════════════════════════════════════════════════════
+#  【基础】 attack_damage 攻击力 · attack_speed 攻击速度
+#  【物理】 physical_damage 物理增伤 · physical_crit_rate 物理暴击率 · physical_crit_damage 物理爆伤 · armor_penetration 护甲穿透 · projectile_damage 投掷物增伤(弓弩三叉戟用)
+#  【法术】 magic_attack 法术伤害 · magic_damage 法术增伤 · magic_crit_rate 法术暴击率 · magic_crit_damage 法术爆伤 · magic_penetration 法术穿透
+#  【技能】 skill_attack 技能伤害 · skill_damage 技能增伤 · skill_crit_rate 技能暴击率 · skill_crit_damage 技能爆伤
+#  【真实】 true_attack 真实伤害 · true_damage 真伤增伤
+#  【环境】 pvp_damage PVP伤害 · pve_damage PVE伤害 · pvp_defense PVP防御 · pve_defense PVE防御
+#  【减伤】 defense 防御 · damage_reduction 伤害减免 · dodge 闪避率 · block_rate 格挡率 · parry 招架率 ·
+#          crit_resist 暴击抗性 · armor 护甲值 · armor_toughness 护甲韧性 · knockback_resistance 击退抗性
+#  【资源】 health 生命 · health_regen 生命恢复 · max_mana 最大法力 · mana_regen 法力恢复 · max_stamina 最大耐力 · stamina_regen 耐力恢复
+#  【通用】 movement_speed 移动速度 · max_absorption 最大吸收 · luck 幸运
+#  【杂项】 lifesteal 生命偷取 · spell_vampirism 法术吸血 · reflection 伤害反弹 · cooldown_reduction 冷却缩减 ·
+#          exp_bonus 经验加成 · loot_bonus 掉落加成 · money_bonus 金币加成 · attack_knockback 攻击击退
+# ════════════════════════════════════════════════════════════

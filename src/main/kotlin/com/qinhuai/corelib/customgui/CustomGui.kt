@@ -1,6 +1,7 @@
 package com.qinhuai.corelib.customgui
 
 import com.qinhuai.corelib.item.ItemSourceManager
+import com.qinhuai.corelib.lang.Lang
 import com.qinhuai.corelib.util.TextUtil
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
@@ -135,7 +136,7 @@ class CustomGui(
                     paginationData.addAll(provider.loadEntries(player, this, pagination.sourceValue))
                 } else {
                     org.bukkit.Bukkit.getLogger().warning(
-                        "[QinhCoreLib] 未注册的分页数据源: ${pagination.sourceType} (value=${pagination.sourceValue})"
+                        Lang.get("custom-gui.unregistered-pagination-source", "type" to pagination.sourceType, "value" to pagination.sourceValue)
                     )
                 }
             }

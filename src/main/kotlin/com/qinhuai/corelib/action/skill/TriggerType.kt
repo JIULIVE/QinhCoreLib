@@ -1,8 +1,5 @@
 package com.qinhuai.corelib.action.skill
 
-/**
- * 统一输入触发类型 — QI 归一化产出，QS 只消费此枚举（不解析 raw Bukkit）。
- */
 enum class TriggerType {
     RIGHT_CLICK,
     LEFT_CLICK,
@@ -19,7 +16,6 @@ enum class TriggerType {
     HOLD_RIGHT_CLICK,
     HOLD_LEFT_CLICK,
 
-    /** QS 内部 / 命令 / API / CI */
     CI_TEST,
     COMMAND,
     API,
@@ -27,7 +23,6 @@ enum class TriggerType {
     UNKNOWN,
     ;
 
-    /** QI action 表 trigger 键（向后兼容） */
     fun legacyActionKey(): String = when (this) {
         RIGHT_CLICK -> "right_click"
         LEFT_CLICK -> "left_click"

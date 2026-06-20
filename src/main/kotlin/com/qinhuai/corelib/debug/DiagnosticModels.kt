@@ -1,9 +1,5 @@
 package com.qinhuai.corelib.debug
 
-/**
- * 平台级统一诊断结果：用于物品解析、桥接、模块、脚本等所有核心链路。
- */
-
 data class DiagnosticResult<T>(
     val success: Boolean,
     val value: T? = null,

@@ -1,10 +1,12 @@
 package com.qinhuai.corelib
 
+import com.qinhuai.corelib.attribute.AttributeModule
 import com.qinhuai.corelib.bootstrap.AbstractModule
 import com.qinhuai.corelib.bootstrap.ModuleManager
 import com.qinhuai.corelib.bootstrap.StartupReporter
 import com.qinhuai.corelib.item.ItemManagerBootstrap
 import com.qinhuai.corelib.item.ItemSourceBootstrap
+import com.qinhuai.corelib.lang.Lang
 
 object CoreModules {
     fun registerAll(moduleManager: ModuleManager) {
@@ -20,6 +22,7 @@ object CoreModules {
         moduleManager.register(GuiModule)
         moduleManager.register(ActionModule)
         moduleManager.register(PdcModule)
+        moduleManager.register(AttributeModule)
         moduleManager.register(ItemModule)
         moduleManager.register(HologramModule)
         moduleManager.register(SchedulerModule)
@@ -38,7 +41,7 @@ object GuiModule : AbstractModule("Gui") {
     override val priority: Int = 20
     override fun load() {
         if (com.qinhuai.corelib.placeholder.PapiBridge.isEnabled()) {
-            StartupReporter.hookedBridge("PlaceholderAPI", "占位符")
+            StartupReporter.hookedBridge("PlaceholderAPI", Lang.get("core-modules.role-placeholder"))
         }
     }
 }
@@ -80,7 +83,7 @@ object ScriptModule : AbstractModule("Script") {
     override fun load() {
         com.qinhuai.corelib.script.QinhScriptBridge.init(QinhCoreLib.instance)
         if (com.qinhuai.corelib.script.QinhScriptBridge.isAvailable()) {
-            StartupReporter.hookedBridge("GraalJS", "脚本")
+            StartupReporter.hookedBridge("GraalJS", Lang.get("core-modules.role-script"))
         }
     }
 
@@ -106,7 +109,7 @@ object CustomBlockModule : AbstractModule("CustomBlock") {
         val provider = com.qinhuai.corelib.customblock.CraftEngineBlockProvider
         com.qinhuai.corelib.customblock.CustomBlockBridge.registerProvider(provider)
         if (provider.isAvailable()) {
-            StartupReporter.hookedBridge("CraftEngine", "自定义方块")
+            StartupReporter.hookedBridge("CraftEngine", Lang.get("core-modules.role-custom-block"))
         }
     }
 }
@@ -123,7 +126,7 @@ object ModelEngineModule : AbstractModule("ModelEngine") {
     override val priority: Int = 9
     override fun load() {
         if (com.qinhuai.corelib.modelengine.ModelEngineBridge.isAvailable()) {
-            StartupReporter.hookedBridge("ModelEngine", "模型")
+            StartupReporter.hookedBridge("ModelEngine", Lang.get("core-modules.role-model"))
         }
     }
 
@@ -138,7 +141,7 @@ object CustomCropsModule : AbstractModule("CustomCrops") {
         if (com.qinhuai.corelib.customcrops.CustomCropsBridge.isAvailable() &&
             com.qinhuai.corelib.customcrops.CustomCropsManager.init()
         ) {
-            StartupReporter.hookedBridge("CustomCrops", "作物")
+            StartupReporter.hookedBridge("CustomCrops", Lang.get("core-modules.role-crops"))
         }
     }
 

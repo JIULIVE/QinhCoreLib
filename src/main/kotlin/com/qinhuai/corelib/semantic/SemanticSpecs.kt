@@ -1,14 +1,5 @@
 package com.qinhuai.corelib.semantic
 
-/**
- * Qinh 统一语义层：把物品、技能、锻造、效果、动作、条件收束为统一的可编排规格。
- *
- * 设计目标：
- * 1. 统一 ID / namespace / version / tags / variables
- * 2. 统一 validate / explain / trace 输入输出
- * 3. 作为后续 DSL、编辑器、调试系统的共同数据底座
- */
-
 interface SemanticSpec {
     val id: String
     val namespace: String

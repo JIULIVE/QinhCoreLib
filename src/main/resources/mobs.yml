@@ -1,0 +1,34 @@
+# ============================================================
+# QinhCoreLib 怪物属性映射 · mobs.yml
+# ============================================================
+# 把 MythicMobs 怪物的「内部名」映射到属性，怪物一刷出来就自动带上。
+#
+#  ★★ 两种写法，任选 ★★
+#  【内联·推荐】像 AP 那样直接写在 MM 怪物 yml 里，一只怪一处搞定：
+#      # plugins/MythicMobs/Mobs/MyMob.yml
+#      SkeletalKnight:
+#        Type: SKELETON
+#        Health: 200
+#        QinhAttributes:          # ← CoreLib 启动/reload 时自动扫这个段
+#          physical_damage: 0.5
+#          defense: 50
+#          fire_damage: 20
+#    （MM 会忽略它不认识的 QinhAttributes 段，不影响怪物本身）
+#  【外挂·本文件】不想动 MM 配置时，在下面 mobs: 里按内部名映射（同名时覆盖内联）。
+#
+# ⚠ 属性名一律用英文 key（physical_damage / fire_damage / health / defense / true_attack ...），
+#   绝不要用中文显示名！可用 key 见游戏内 /qcl attr list。
+#
+# 战斗结算与玩家完全一致：health=血量上限、defense=减伤、physical_damage=物理增伤%、
+# fire_damage=火元素伤害、true_attack=真实伤害(穿透防御) 等。
+#
+# 改完 /qcl reload 生效。仅 native 后端模式下填充（AP 模式由 AP 自己读怪物属性）。
+# 顶层固定为 mobs，子键 = MM 怪物内部名（大小写敏感）。
+mobs:
+#  # 示例：MM 里内部名为 SkeletalKnight 的怪
+#  SkeletalKnight:
+#    health: 200
+#    defense: 50
+#    physical_damage: 0.5
+#    fire_damage: 20
+#    true_attack: 10

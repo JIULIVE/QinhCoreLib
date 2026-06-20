@@ -1,0 +1,55 @@
+# ============================================================
+# QinhCoreLib 元素系统 · elements.yml
+# ============================================================
+# 每个元素自动生成 3 个属性（/qcl attr list 可见、物品/职业可声明）：
+#   <元素>伤害   flat，加在你的攻击上的该元素伤害
+#   <元素>增伤   %，放大该元素伤害
+#   <元素>抗性   %，减免受到的该元素伤害（0-1）
+#
+# 战斗结算：元素伤害 = Σ( <元素>伤害 × (1+<元素>增伤) × (1-目标<元素>抗性) × 相克倍率 )
+#   元素伤害穿透物理防御/减伤，但被对应元素抗性减免、且吃闪避/格挡/招架。
+#
+# 相生相克（五行）：
+#   restrains 列出"我克谁"。克之伤害 ×restraint-bonus，被克 ×(2-bonus)，无关 ×1。
+#   目标"本命元素" = 其抗性最高的元素（你抗火最多即火属性，水攻击克你）。
+#
+# 改完 /qcl reload 生效。可自由增删元素 / 改相克关系。
+restraint-bonus: 1.5   # 克：×1.5（+50%）；被克：×0.5
+
+elements:
+  # ===== 五行（相克闭环：金→木→土→水→火→金）=====
+  metal:
+    name: 金
+    color: "&7"
+    restrains: [wood]
+  wood:
+    name: 木
+    color: "&2"
+    restrains: [earth]
+  earth:
+    name: 土
+    color: "&6"
+    restrains: [water]
+  water:
+    name: 水
+    color: "&b"
+    restrains: [fire]
+  fire:
+    name: 火
+    color: "&c"
+    restrains: [metal]
+  # ===== 其它元素（无相克，可自行配置 restrains）=====
+  wind:
+    name: 风
+    color: "&f"
+  thunder:
+    name: 雷
+    color: "&e"
+  light:
+    name: 光
+    color: "&e"
+    restrains: [dark]
+  dark:
+    name: 暗
+    color: "&8"
+    restrains: [light]

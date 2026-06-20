@@ -1,0 +1,7 @@
+database-manager.restore-inventory-failed: "Не удалось восстановить данные инвентаря: {error}"
+database-manager.sqlite-available: "База данных SQLite доступна"
+database-manager.mysql-available: "База данных MySQL доступна"
+database-manager.sqlite-initialized: "База данных SQLite инициализирована"
+database-manager.sqlite-not-initialized: "SQLite не инициализирована"
+database-manager.mysql-initialized: "База данных MySQL инициализирована"
+database-manager.mysql-not-initialized: "MySQL не инициализирована"

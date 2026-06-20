@@ -1,12 +1,10 @@
 package com.qinhuai.corelib.economy
 
+import com.qinhuai.corelib.lang.Lang
 import org.bukkit.OfflinePlayer
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.UUID
 
-/**
- * PlayerPoints（反射），点券为整数，接口层仍用 Double。
- */
 class PlayerPointsEconomyProvider(
     private val plugin: JavaPlugin,
 ) : EconomyProvider {
@@ -25,35 +23,35 @@ class PlayerPointsEconomyProvider(
     }
 
     override fun deposit(player: OfflinePlayer, amount: Double, currencyId: String?): EconomyTransactionResult {
-        val api = api() ?: return EconomyTransactionResult.fail("PlayerPoints 不可用", suggestion = "确认 PlayerPoints 已安装并启用", provider = id)
-        val points = amount.toPoints() ?: return EconomyTransactionResult.fail("无效点券数量", code = "INVALID_AMOUNT", suggestion = "金额必须是非负有限数", provider = id)
+        val api = api() ?: return EconomyTransactionResult.fail(Lang.get("player-points-economy-provider.unavailable"), suggestion = Lang.get("player-points-economy-provider.unavailable-suggestion"), provider = id)
+        val points = amount.toPoints() ?: return EconomyTransactionResult.fail(Lang.get("player-points-economy-provider.invalid-amount"), code = "INVALID_AMOUNT", suggestion = Lang.get("player-points-economy-provider.invalid-amount-suggestion"), provider = id)
         return if (invokeBoolean(api, "give", player.uniqueId, points) == true) {
             EconomyTransactionResult.ok(id)
         } else {
-            EconomyTransactionResult.fail("PlayerPoints 发放失败", suggestion = "检查 PlayerPoints API 状态", provider = id)
+            EconomyTransactionResult.fail(Lang.get("player-points-economy-provider.deposit-failed"), suggestion = Lang.get("player-points-economy-provider.api-status-suggestion"), provider = id)
         }
     }
 
     override fun withdraw(player: OfflinePlayer, amount: Double, currencyId: String?): EconomyTransactionResult {
-        val api = api() ?: return EconomyTransactionResult.fail("PlayerPoints 不可用", suggestion = "确认 PlayerPoints 已安装并启用", provider = id)
-        val points = amount.toPoints() ?: return EconomyTransactionResult.fail("无效点券数量", code = "INVALID_AMOUNT", suggestion = "金额必须是非负有限数", provider = id)
+        val api = api() ?: return EconomyTransactionResult.fail(Lang.get("player-points-economy-provider.unavailable"), suggestion = Lang.get("player-points-economy-provider.unavailable-suggestion"), provider = id)
+        val points = amount.toPoints() ?: return EconomyTransactionResult.fail(Lang.get("player-points-economy-provider.invalid-amount"), code = "INVALID_AMOUNT", suggestion = Lang.get("player-points-economy-provider.invalid-amount-suggestion"), provider = id)
         if (getBalance(player, currencyId) < amount) {
-            return EconomyTransactionResult.fail("点券不足", code = "INSUFFICIENT_FUNDS", suggestion = "减少消耗或补充点券", provider = id)
+            return EconomyTransactionResult.fail(Lang.get("player-points-economy-provider.insufficient"), code = "INSUFFICIENT_FUNDS", suggestion = Lang.get("player-points-economy-provider.insufficient-suggestion"), provider = id)
         }
         return if (invokeBoolean(api, "take", player.uniqueId, points) == true) {
             EconomyTransactionResult.ok(id)
         } else {
-            EconomyTransactionResult.fail("PlayerPoints 扣除失败", suggestion = "检查 PlayerPoints API 状态", provider = id)
+            EconomyTransactionResult.fail(Lang.get("player-points-economy-provider.withdraw-failed"), suggestion = Lang.get("player-points-economy-provider.api-status-suggestion"), provider = id)
         }
     }
 
     override fun setBalance(player: OfflinePlayer, amount: Double, currencyId: String?): EconomyTransactionResult {
-        val api = api() ?: return EconomyTransactionResult.fail("PlayerPoints 不可用", suggestion = "确认 PlayerPoints 已安装并启用", provider = id)
-        val points = amount.toPoints() ?: return EconomyTransactionResult.fail("无效点券数量", code = "INVALID_AMOUNT", suggestion = "金额必须是非负有限数", provider = id)
+        val api = api() ?: return EconomyTransactionResult.fail(Lang.get("player-points-economy-provider.unavailable"), suggestion = Lang.get("player-points-economy-provider.unavailable-suggestion"), provider = id)
+        val points = amount.toPoints() ?: return EconomyTransactionResult.fail(Lang.get("player-points-economy-provider.invalid-amount"), code = "INVALID_AMOUNT", suggestion = Lang.get("player-points-economy-provider.invalid-amount-suggestion"), provider = id)
         return if (invokeBoolean(api, "set", player.uniqueId, points) == true) {
             EconomyTransactionResult.ok(id)
         } else {
-            EconomyTransactionResult.fail("PlayerPoints 设置失败", suggestion = "检查 PlayerPoints API 状态", provider = id)
+            EconomyTransactionResult.fail(Lang.get("player-points-economy-provider.set-failed"), suggestion = Lang.get("player-points-economy-provider.api-status-suggestion"), provider = id)
         }
     }
 

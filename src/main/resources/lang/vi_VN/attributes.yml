@@ -1,0 +1,192 @@
+attack_damage:
+  display_name: "Sát Thương Tấn Công"
+  prefix: ""
+  suffix: ""
+attack_speed:
+  display_name: "Tốc Độ Đánh"
+  prefix: ""
+  suffix: ""
+physical_damage:
+  display_name: "Sát Thương Vật Lý"
+  prefix: ""
+  suffix: "%"
+physical_crit_rate:
+  display_name: "Tỉ Lệ Chí Mạng Vật Lý"
+  prefix: ""
+  suffix: "%"
+physical_crit_damage:
+  display_name: "Sát Thương Chí Mạng Vật Lý"
+  prefix: ""
+  suffix: "%"
+armor_penetration:
+  display_name: "Xuyên Giáp"
+  prefix: ""
+  suffix: ""
+projectile_damage:
+  display_name: "Sát Thương Đạn Bay"
+  prefix: ""
+  suffix: "%"
+magic_attack:
+  display_name: "Tấn Công Phép"
+  prefix: ""
+  suffix: ""
+magic_damage:
+  display_name: "Sát Thương Phép"
+  prefix: ""
+  suffix: "%"
+magic_crit_rate:
+  display_name: "Tỉ Lệ Chí Mạng Phép"
+  prefix: ""
+  suffix: "%"
+magic_crit_damage:
+  display_name: "Sát Thương Chí Mạng Phép"
+  prefix: ""
+  suffix: "%"
+magic_penetration:
+  display_name: "Xuyên Kháng Phép"
+  prefix: ""
+  suffix: ""
+skill_attack:
+  display_name: "Tấn Công Kỹ Năng"
+  prefix: ""
+  suffix: ""
+skill_damage:
+  display_name: "Sát Thương Kỹ Năng"
+  prefix: ""
+  suffix: "%"
+skill_crit_rate:
+  display_name: "Tỉ Lệ Chí Mạng Kỹ Năng"
+  prefix: ""
+  suffix: "%"
+skill_crit_damage:
+  display_name: "Sát Thương Chí Mạng Kỹ Năng"
+  prefix: ""
+  suffix: "%"
+true_attack:
+  display_name: "Sát Thương Chuẩn"
+  prefix: ""
+  suffix: ""
+true_damage:
+  display_name: "Cộng Thêm Sát Thương Chuẩn"
+  prefix: ""
+  suffix: "%"
+pvp_damage:
+  display_name: "Sát Thương PvP"
+  prefix: ""
+  suffix: "%"
+pve_damage:
+  display_name: "Sát Thương PvE"
+  prefix: ""
+  suffix: "%"
+pvp_defense:
+  display_name: "Phòng Thủ PvP"
+  prefix: ""
+  suffix: "%"
+pve_defense:
+  display_name: "Phòng Thủ PvE"
+  prefix: ""
+  suffix: "%"
+defense:
+  display_name: "Phòng Thủ"
+  prefix: ""
+  suffix: ""
+damage_reduction:
+  display_name: "Giảm Sát Thương"
+  prefix: ""
+  suffix: "%"
+dodge:
+  display_name: "Né Tránh"
+  prefix: ""
+  suffix: "%"
+block_rate:
+  display_name: "Tỉ Lệ Đỡ"
+  prefix: ""
+  suffix: "%"
+parry:
+  display_name: "Phản Đòn"
+  prefix: ""
+  suffix: "%"
+crit_resist:
+  display_name: "Kháng Chí Mạng"
+  prefix: ""
+  suffix: "%"
+armor:
+  display_name: "Giáp"
+  prefix: ""
+  suffix: ""
+armor_toughness:
+  display_name: "Độ Bền Giáp"
+  prefix: ""
+  suffix: ""
+knockback_resistance:
+  display_name: "Kháng Hất Văng"
+  prefix: ""
+  suffix: "%"
+health:
+  display_name: "Máu"
+  prefix: ""
+  suffix: ""
+health_regen:
+  display_name: "Hồi Máu"
+  prefix: ""
+  suffix: ""
+max_mana:
+  display_name: "Mana Tối Đa"
+  prefix: ""
+  suffix: ""
+mana_regen:
+  display_name: "Hồi Mana"
+  prefix: ""
+  suffix: ""
+max_stamina:
+  display_name: "Thể Lực Tối Đa"
+  prefix: ""
+  suffix: ""
+stamina_regen:
+  display_name: "Hồi Thể Lực"
+  prefix: ""
+  suffix: ""
+movement_speed:
+  display_name: "Tốc Độ Di Chuyển"
+  prefix: ""
+  suffix: ""
+max_absorption:
+  display_name: "Hấp Thụ Tối Đa"
+  prefix: ""
+  suffix: ""
+luck:
+  display_name: "May Mắn"
+  prefix: ""
+  suffix: ""
+lifesteal:
+  display_name: "Hút Máu"
+  prefix: ""
+  suffix: "%"
+spell_vampirism:
+  display_name: "Hút Máu Phép"
+  prefix: ""
+  suffix: "%"
+reflection:
+  display_name: "Phản Sát Thương"
+  prefix: ""
+  suffix: "%"
+cooldown_reduction:
+  display_name: "Giảm Hồi Chiêu"
+  prefix: ""
+  suffix: "%"
+exp_bonus:
+  display_name: "Cộng Thêm EXP"
+  prefix: ""
+  suffix: "%"
+loot_bonus:
+  display_name: "Cộng Thêm Chiến Lợi Phẩm"
+  prefix: ""
+  suffix: "%"
+money_bonus:
+  display_name: "Cộng Thêm Tiền"
+  prefix: ""
+  suffix: "%"
+attack_knockback:
+  display_name: "Hất Văng Khi Đánh"
+  prefix: ""
+  suffix: ""

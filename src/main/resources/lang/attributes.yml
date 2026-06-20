@@ -1,0 +1,239 @@
+# ============================================================
+# QinhCoreLib 属性显示 · lang/attributes.yml （跨语言基准层 / shared base layer）
+# ============================================================
+# 只改「显示」——每个属性在物品 lore 上长什么样。改完 /qcl reload，再 /qi refresh 重渲物品。
+# 功能（加属性 / 大类 / 伤害类型 / JS钩子）在上一层 ../attributes.yml；这里只管外观。
+#
+# 【多语言加载顺序】（后者覆盖前者，逐字段合并）：
+#   1) 本文件 lang/attributes.yml          —— 跨语言基准层（本层）
+#   2) lang/en_US/attributes.yml           —— 英文回退
+#   3) lang/<当前语言>/attributes.yml       —— config.yml 的 language 选定的语言
+#
+#   · display_name（显示名）：各语言文件里已按语言翻好，会盖掉本文件 → 本文件的显示名仅作兜底。
+#   · prefix / suffix：本文件设一次，所有语言通用（除非某语言文件单独覆盖）。
+#     → 想给属性加资源包贴图图标：在本文件对应属性的 prefix 写一次，全语言生效，最省事。
+#
+# 每个属性一块，三个字段：
+#   display_name : 显示名（多语言译文在 lang/<语言>/attributes.yml；本层为兜底）
+#   prefix       : 名称前（放资源包 16px 贴图字符 / 符号 / 颜色，如 "<gray>⚔ "）—— 跨语言通用
+#   suffix       : 数值后（单位，如 "%"）—— 跨语言通用
+# 中文字段别名也认：显示名 / 前缀 / 后缀
+#
+# 渲染格式：  {prefix}{display_name}: {±数值}{suffix}
+#   例：prefix="⚔ "  display_name="物理暴击率"  suffix="%"   →   ⚔ 物理暴击率: +20%
+#
+# ★ 后缀含 % 时，数值自动 ×100（暴击率存的是 0.2 → 显示 20%），不用自己换算。
+# ★ 不在任何层配置的属性 → 用代码内置显示名 + 默认样式渲染（不会报错）。
+# ============================================================
+
+# ===== 基础 =====
+attack_damage:
+  display_name: "攻击力"
+  prefix: ""
+  suffix: ""
+attack_speed:
+  display_name: "攻击速度"
+  prefix: ""
+  suffix: ""
+
+# ===== 物理 =====
+physical_damage:
+  display_name: "物理增伤"
+  prefix: ""
+  suffix: "%"
+physical_crit_rate:
+  display_name: "物理暴击率"
+  prefix: ""
+  suffix: "%"
+physical_crit_damage:
+  display_name: "物理爆伤"
+  prefix: ""
+  suffix: "%"
+armor_penetration:
+  display_name: "护甲穿透"
+  prefix: ""
+  suffix: ""
+projectile_damage:
+  display_name: "投掷物增伤"
+  prefix: ""
+  suffix: "%"
+
+# ===== 法术 =====
+magic_attack:
+  display_name: "法术伤害"
+  prefix: ""
+  suffix: ""
+magic_damage:
+  display_name: "法术增伤"
+  prefix: ""
+  suffix: "%"
+magic_crit_rate:
+  display_name: "法术暴击率"
+  prefix: ""
+  suffix: "%"
+magic_crit_damage:
+  display_name: "法术爆伤"
+  prefix: ""
+  suffix: "%"
+magic_penetration:
+  display_name: "法术穿透"
+  prefix: ""
+  suffix: ""
+
+# ===== 技能 =====
+skill_attack:
+  display_name: "技能伤害"
+  prefix: ""
+  suffix: ""
+skill_damage:
+  display_name: "技能增伤"
+  prefix: ""
+  suffix: "%"
+skill_crit_rate:
+  display_name: "技能暴击率"
+  prefix: ""
+  suffix: "%"
+skill_crit_damage:
+  display_name: "技能爆伤"
+  prefix: ""
+  suffix: "%"
+
+# ===== 真实 =====
+true_attack:
+  display_name: "真实伤害"
+  prefix: ""
+  suffix: ""
+true_damage:
+  display_name: "真伤增伤"
+  prefix: ""
+  suffix: "%"
+
+# ===== 环境 =====
+pvp_damage:
+  display_name: "PVP伤害"
+  prefix: ""
+  suffix: "%"
+pve_damage:
+  display_name: "PVE伤害"
+  prefix: ""
+  suffix: "%"
+pvp_defense:
+  display_name: "PVP防御"
+  prefix: ""
+  suffix: "%"
+pve_defense:
+  display_name: "PVE防御"
+  prefix: ""
+  suffix: "%"
+
+# ===== 减伤防御 =====
+defense:
+  display_name: "防御"
+  prefix: ""
+  suffix: ""
+damage_reduction:
+  display_name: "伤害减免"
+  prefix: ""
+  suffix: "%"
+dodge:
+  display_name: "闪避率"
+  prefix: ""
+  suffix: "%"
+block_rate:
+  display_name: "格挡率"
+  prefix: ""
+  suffix: "%"
+parry:
+  display_name: "招架率"
+  prefix: ""
+  suffix: "%"
+crit_resist:
+  display_name: "暴击抗性"
+  prefix: ""
+  suffix: "%"
+armor:
+  display_name: "护甲值"
+  prefix: ""
+  suffix: ""
+armor_toughness:
+  display_name: "护甲韧性"
+  prefix: ""
+  suffix: ""
+knockback_resistance:
+  display_name: "击退抗性"
+  prefix: ""
+  suffix: "%"
+
+# ===== 资源 =====
+health:
+  display_name: "生命"
+  prefix: ""
+  suffix: ""
+health_regen:
+  display_name: "生命恢复"
+  prefix: ""
+  suffix: ""
+max_mana:
+  display_name: "最大法力"
+  prefix: ""
+  suffix: ""
+mana_regen:
+  display_name: "法力恢复"
+  prefix: ""
+  suffix: ""
+max_stamina:
+  display_name: "最大耐力"
+  prefix: ""
+  suffix: ""
+stamina_regen:
+  display_name: "耐力恢复"
+  prefix: ""
+  suffix: ""
+
+# ===== 通用 =====
+movement_speed:
+  display_name: "移动速度"
+  prefix: ""
+  suffix: ""
+max_absorption:
+  display_name: "最大吸收"
+  prefix: ""
+  suffix: ""
+luck:
+  display_name: "幸运"
+  prefix: ""
+  suffix: ""
+
+# ===== 杂项 =====
+lifesteal:
+  display_name: "生命偷取"
+  prefix: ""
+  suffix: "%"
+spell_vampirism:
+  display_name: "法术吸血"
+  prefix: ""
+  suffix: "%"
+reflection:
+  display_name: "伤害反弹"
+  prefix: ""
+  suffix: "%"
+cooldown_reduction:
+  display_name: "冷却缩减"
+  prefix: ""
+  suffix: "%"
+exp_bonus:
+  display_name: "经验加成"
+  prefix: ""
+  suffix: "%"
+loot_bonus:
+  display_name: "掉落加成"
+  prefix: ""
+  suffix: "%"
+money_bonus:
+  display_name: "金币加成"
+  prefix: ""
+  suffix: "%"
+attack_knockback:
+  display_name: "攻击击退"
+  prefix: ""
+  suffix: ""

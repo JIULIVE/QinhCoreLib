@@ -38,7 +38,6 @@ object ItemSourceBootstrap {
         allSources.forEach { ItemSourceManager.unregister(it.id) }
     }
 
-    /** 在所有插件 enable 后调用，汇报实际可用的物品源。 */
     fun reportAvailable() {
         ItemSourceManager.registeredSources()
             .filter { it.isAvailable() }

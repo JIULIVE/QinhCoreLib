@@ -7,6 +7,8 @@ object ItemsAdderBridge {
     private var customStackClass: Class<*>? = null
     private var getInstanceMethod: java.lang.reflect.Method? = null
     private var getItemStackMethod: java.lang.reflect.Method? = null
+    private var byItemStackMethod: java.lang.reflect.Method? = null
+    private var getNamespacedIDMethod: java.lang.reflect.Method? = null
 
     fun isAvailable(): Boolean {
         return try {
@@ -21,6 +23,22 @@ object ItemsAdderBridge {
             true
         } catch (e: Exception) {
             false
+        }
+    }
+
+    fun idFromItem(stack: ItemStack): String? {
+        if (!isAvailable()) return null
+        return try {
+            if (byItemStackMethod == null) {
+                byItemStackMethod = customStackClass!!.getMethod("byItemStack", ItemStack::class.java)
+            }
+            val custom = byItemStackMethod!!.invoke(null, stack) ?: return null
+            if (getNamespacedIDMethod == null) {
+                getNamespacedIDMethod = custom.javaClass.getMethod("getNamespacedID")
+            }
+            getNamespacedIDMethod!!.invoke(custom) as? String
+        } catch (e: Exception) {
+            null
         }
     }
 

@@ -1,6 +1,7 @@
 package com.qinhuai.corelib.debug
 
 import com.qinhuai.corelib.config.ConfigManager
+import com.qinhuai.corelib.lang.Lang
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 
@@ -13,7 +14,7 @@ object ConfigDiagnostics {
                 available = cfg != null,
                 enabled = cfg != null,
                 source = "Config",
-                message = if (cfg != null) "已加载" else "未加载",
+                message = if (cfg != null) Lang.get("common.loaded") else Lang.get("config-diagnostics.not-loaded"),
                 recoverable = true,
             )
         }

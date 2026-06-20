@@ -1,0 +1,192 @@
+attack_damage:
+  display_name: "Attack Damage"
+  prefix: ""
+  suffix: ""
+attack_speed:
+  display_name: "Attack Speed"
+  prefix: ""
+  suffix: ""
+physical_damage:
+  display_name: "Physical Damage"
+  prefix: ""
+  suffix: "%"
+physical_crit_rate:
+  display_name: "Physical Crit Rate"
+  prefix: ""
+  suffix: "%"
+physical_crit_damage:
+  display_name: "Physical Crit Damage"
+  prefix: ""
+  suffix: "%"
+armor_penetration:
+  display_name: "Armor Penetration"
+  prefix: ""
+  suffix: ""
+projectile_damage:
+  display_name: "Projectile Damage"
+  prefix: ""
+  suffix: "%"
+magic_attack:
+  display_name: "Magic Attack"
+  prefix: ""
+  suffix: ""
+magic_damage:
+  display_name: "Magic Damage"
+  prefix: ""
+  suffix: "%"
+magic_crit_rate:
+  display_name: "Magic Crit Rate"
+  prefix: ""
+  suffix: "%"
+magic_crit_damage:
+  display_name: "Magic Crit Damage"
+  prefix: ""
+  suffix: "%"
+magic_penetration:
+  display_name: "Magic Penetration"
+  prefix: ""
+  suffix: ""
+skill_attack:
+  display_name: "Skill Attack"
+  prefix: ""
+  suffix: ""
+skill_damage:
+  display_name: "Skill Damage"
+  prefix: ""
+  suffix: "%"
+skill_crit_rate:
+  display_name: "Skill Crit Rate"
+  prefix: ""
+  suffix: "%"
+skill_crit_damage:
+  display_name: "Skill Crit Damage"
+  prefix: ""
+  suffix: "%"
+true_attack:
+  display_name: "True Damage"
+  prefix: ""
+  suffix: ""
+true_damage:
+  display_name: "True Damage Bonus"
+  prefix: ""
+  suffix: "%"
+pvp_damage:
+  display_name: "PvP Damage"
+  prefix: ""
+  suffix: "%"
+pve_damage:
+  display_name: "PvE Damage"
+  prefix: ""
+  suffix: "%"
+pvp_defense:
+  display_name: "PvP Defense"
+  prefix: ""
+  suffix: "%"
+pve_defense:
+  display_name: "PvE Defense"
+  prefix: ""
+  suffix: "%"
+defense:
+  display_name: "Defense"
+  prefix: ""
+  suffix: ""
+damage_reduction:
+  display_name: "Damage Reduction"
+  prefix: ""
+  suffix: "%"
+dodge:
+  display_name: "Dodge"
+  prefix: ""
+  suffix: "%"
+block_rate:
+  display_name: "Block Rate"
+  prefix: ""
+  suffix: "%"
+parry:
+  display_name: "Parry"
+  prefix: ""
+  suffix: "%"
+crit_resist:
+  display_name: "Crit Resistance"
+  prefix: ""
+  suffix: "%"
+armor:
+  display_name: "Armor"
+  prefix: ""
+  suffix: ""
+armor_toughness:
+  display_name: "Armor Toughness"
+  prefix: ""
+  suffix: ""
+knockback_resistance:
+  display_name: "Knockback Resistance"
+  prefix: ""
+  suffix: "%"
+health:
+  display_name: "Health"
+  prefix: ""
+  suffix: ""
+health_regen:
+  display_name: "Health Regen"
+  prefix: ""
+  suffix: ""
+max_mana:
+  display_name: "Max Mana"
+  prefix: ""
+  suffix: ""
+mana_regen:
+  display_name: "Mana Regen"
+  prefix: ""
+  suffix: ""
+max_stamina:
+  display_name: "Max Stamina"
+  prefix: ""
+  suffix: ""
+stamina_regen:
+  display_name: "Stamina Regen"
+  prefix: ""
+  suffix: ""
+movement_speed:
+  display_name: "Movement Speed"
+  prefix: ""
+  suffix: ""
+max_absorption:
+  display_name: "Max Absorption"
+  prefix: ""
+  suffix: ""
+luck:
+  display_name: "Luck"
+  prefix: ""
+  suffix: ""
+lifesteal:
+  display_name: "Lifesteal"
+  prefix: ""
+  suffix: "%"
+spell_vampirism:
+  display_name: "Spell Vampirism"
+  prefix: ""
+  suffix: "%"
+reflection:
+  display_name: "Reflection"
+  prefix: ""
+  suffix: "%"
+cooldown_reduction:
+  display_name: "Cooldown Reduction"
+  prefix: ""
+  suffix: "%"
+exp_bonus:
+  display_name: "EXP Bonus"
+  prefix: ""
+  suffix: "%"
+loot_bonus:
+  display_name: "Loot Bonus"
+  prefix: ""
+  suffix: "%"
+money_bonus:
+  display_name: "Money Bonus"
+  prefix: ""
+  suffix: "%"
+attack_knockback:
+  display_name: "Attack Knockback"
+  prefix: ""
+  suffix: ""

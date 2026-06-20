@@ -24,7 +24,7 @@ data class CustomBlockConfig(
                 return item
             }
         }
-        
+
         val item = ItemStack(fallbackMaterial, amount)
         if (fallbackCustomModelData != null) {
             val meta = item.itemMeta
@@ -33,26 +33,24 @@ data class CustomBlockConfig(
         }
         return item
     }
-    
+
     fun place(location: Location, player: org.bukkit.entity.Player? = null, playSound: Boolean = true): PlaceResult {
         val rotatedLocation = location.clone()
         if (player != null) {
             rotatedLocation.yaw = player.location.yaw
             rotatedLocation.pitch = player.location.pitch
         }
-        
+
         for (source in itemSources) {
             if (source.startsWith("craftengine-")) {
                 val idPart = source.removePrefix("craftengine-")
                 val identifier = idPart.replaceFirst("_", ":")
-                
-                // 优先使用家具
+
                 val entity = CraftEngineManager.placeFurniture(rotatedLocation, identifier)
                 if (entity != null) {
                     return PlaceResult.Furniture(entity)
                 }
-                
-                // 家具失败后尝试方块
+
                 val success = CraftEngineManager.placeBlock(location, identifier, playSound)
                 if (success) {
                     return PlaceResult.Block(location.block)
@@ -62,13 +60,13 @@ data class CustomBlockConfig(
         location.block.type = fallbackMaterial
         return PlaceResult.Fallback(location.block)
     }
-    
+
     @Deprecated("Use place() instead", ReplaceWith("place(location, null, playSound)"))
     fun placeBlock(location: Location, playSound: Boolean = true): Boolean {
         val result = place(location, null, playSound)
         return result !is PlaceResult.Fallback || location.block.type == fallbackMaterial
     }
-    
+
     fun isThis(obj: Any): Boolean {
         when (obj) {
             is Block -> {
@@ -108,10 +106,10 @@ data class CustomBlockConfig(
             else -> return false
         }
     }
-    
+
     @Deprecated("Use isThis() instead", ReplaceWith("isThis(block)"))
     fun isThisBlock(block: Block): Boolean = isThis(block)
-    
+
     fun remove(obj: Any, dropLoot: Boolean = true, playSound: Boolean = true): Boolean {
         when (obj) {
             is Block -> {
@@ -130,10 +128,10 @@ data class CustomBlockConfig(
             else -> return false
         }
     }
-    
+
     @Deprecated("Use remove() instead", ReplaceWith("remove(block)"))
     fun removeBlock(block: Block): Boolean = remove(block)
-    
+
     companion object {
         fun fromConfig(section: ConfigurationSection, fallbackMaterial: Material = Material.CHEST): CustomBlockConfig {
             val materialName = section.getString("material")
@@ -146,9 +144,9 @@ data class CustomBlockConfig(
             } else {
                 fallbackMaterial
             }
-            
+
             val cmd = section.getInt("custom-model-data", -1)
-            
+
             return CustomBlockConfig(
                 id = section.name,
                 displayName = section.getString("displayname", section.name)!!,

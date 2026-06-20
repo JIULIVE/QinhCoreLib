@@ -1,0 +1,7 @@
+database-manager.restore-inventory-failed: "還原背包資料失敗: {error}"
+database-manager.sqlite-available: "SQLite 資料庫可用"
+database-manager.mysql-available: "MySQL 資料庫可用"
+database-manager.sqlite-initialized: "SQLite 資料庫已初始化"
+database-manager.sqlite-not-initialized: "SQLite 未初始化"
+database-manager.mysql-initialized: "MySQL 資料庫已初始化"
+database-manager.mysql-not-initialized: "MySQL 未初始化"

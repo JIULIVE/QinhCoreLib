@@ -1,12 +1,10 @@
 package com.qinhuai.corelib.bootstrap
 
 import com.qinhuai.corelib.QinhCoreLib
+import com.qinhuai.corelib.lang.Lang
 import com.qinhuai.corelib.util.TextUtil
 import org.bukkit.plugin.java.JavaPlugin
 
-/**
- * 启动期软依赖挂钩日志：仅在实际可用时输出单行，最后汇总统计。
- */
 object StartupReporter {
 
     private val itemSources = mutableListOf<String>()
@@ -28,7 +26,7 @@ object StartupReporter {
     fun hookedItemSource(pluginDisplayName: String) {
         if (itemSources.contains(pluginDisplayName)) return
         itemSources.add(pluginDisplayName)
-        logHook(pluginDisplayName, "物品源")
+        logHook(pluginDisplayName, Lang.get("startup-reporter.role-item-source"))
     }
 
     fun hookedBridge(pluginDisplayName: String, role: String) {
@@ -38,7 +36,7 @@ object StartupReporter {
 
     fun hookedEconomy(providerDisplayName: String) {
         economies.add(providerDisplayName)
-        logHook(providerDisplayName, "经济")
+        logHook(providerDisplayName, Lang.get("startup-reporter.role-economy"))
     }
 
     fun printSummary(plugin: JavaPlugin) {
@@ -48,17 +46,24 @@ object StartupReporter {
             addAll(economies)
         }
         if (allHooked.isEmpty()) {
-            TextUtil.logColored(plugin, "§6[QinhCoreLib] §e未挂钩任何软依赖")
+            TextUtil.logColored(plugin, Lang.get("startup-reporter.no-soft-deps"))
             return
         }
         val bridgeTotal = bridges.size + economies.size
         plugin.logger.info(
-            "  物品源 : ${itemSources.size}    GUI : $guiCount    桥接 : $bridgeTotal",
+            Lang.get(
+                "startup-reporter.summary-counts",
+                "items" to itemSources.size,
+                "gui" to guiCount,
+                "bridges" to bridgeTotal,
+            ),
         )
-        plugin.logger.info("  已挂钩 : ${allHooked.distinct().joinToString(", ")}")
+        plugin.logger.info(
+            Lang.get("startup-reporter.summary-hooked", "list" to allHooked.distinct().joinToString(", ")),
+        )
     }
 
     private fun logHook(name: String, role: String) {
-        TextUtil.logColored(QinhCoreLib.instance, "§a已挂钩软依赖 §f$name §a作为§e$role")
+        TextUtil.logColored(QinhCoreLib.instance, Lang.get("startup-reporter.hooked", "name" to name, "role" to role))
     }
 }

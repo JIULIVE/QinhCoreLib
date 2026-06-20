@@ -5,10 +5,10 @@ import org.bukkit.inventory.ItemStack
 
 object NeigeItemsItemSource : ItemSource {
     override val id: String = "neigeitems"
-    
+
     override fun getItem(id: String, amount: Int): ItemStack? {
         if (!isAvailable()) return null
-        
+
         return try {
             val itemStack = NeigeItemsManager.getItemStack(id) ?: return null
             val cloned = itemStack.clone()
@@ -18,6 +18,8 @@ object NeigeItemsItemSource : ItemSource {
             null
         }
     }
-    
+
     override fun isAvailable(): Boolean = NeigeItemsManager.isAvailable()
+
+    override fun identify(stack: ItemStack): String? = NeigeItemsManager.getItemId(stack)
 }

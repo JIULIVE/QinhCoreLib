@@ -10,16 +10,9 @@ import com.qinhuai.corelib.item.ItemSourceType
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import com.qinhuai.corelib.lang.Lang
 import java.util.Locale
 
-/**
- * 统一物品桥 — 对标传奇 LegendCore ItemManagerAPI。
- *
- * ```groovy
- * ItemManagerAPI.instance.register(plugin, module, "ox", "oraxen")
- * def stack = ItemManagerAPI.instance.getHookItem("mm-海神三叉戟")
- * ```
- */
 class ItemManagerAPI private constructor() {
 
     data class RegisteredModule(
@@ -30,7 +23,6 @@ class ItemManagerAPI private constructor() {
     private val byAlias = linkedMapOf<String, RegisteredModule>()
 
     companion object {
-        /** 传奇系 Groovy 脚本使用 {@code ItemManagerAPI.instance} */
         @JvmField
         val instance: ItemManagerAPI = ItemManagerAPI()
 
@@ -81,6 +73,10 @@ class ItemManagerAPI private constructor() {
         val traceId: String = "",
     )
 
+    fun matches(stack: ItemStack, ref: String): Boolean = ItemSourceManager.matchesReference(stack, ref)
+
+    fun identify(stack: ItemStack): Pair<String, String>? = ItemSourceManager.identify(stack)
+
     fun getHookItem(ref: String, player: Player?, amount: Int = 1): ItemStack? {
         val parsed = ItemReferenceParser.parse(ref) ?: return null
         val stack = resolveStack(parsed, player).item ?: return null
@@ -113,7 +109,7 @@ class ItemManagerAPI private constructor() {
 
     fun resolve(ref: String, player: Player? = null, amount: Int = 1): ResolveResult {
         val parsed = ItemReferenceParser.parse(ref)
-            ?: return ResolveResult(false, code = "PARSE_FAILED", message = "物品引用解析失败", suggestion = "检查引用格式，例如 mm-xxx / qinhitems:id / vanilla:IRON_INGOT")
+            ?: return ResolveResult(false, code = "PARSE_FAILED", message = Lang.get("item-manager-api.parse-failed"), suggestion = Lang.get("item-manager-api.parse-failed-suggestion"))
         val resolved = resolveStack(parsed, player)
         val stack = resolved.item ?: return resolved
         stack.amount = amount.coerceAtLeast(1)
@@ -126,7 +122,7 @@ class ItemManagerAPI private constructor() {
         when (alias) {
             "material", "type", "vanilla" -> {
                 return vanillaMaterial(parsed.itemId)?.let { ResolveResult(true, it, source = "vanilla") }
-                    ?: ResolveResult(false, code = "MATERIAL_NOT_FOUND", message = "无法匹配原版物品: ${parsed.itemId}", source = "vanilla", suggestion = "确认材料名是否为 Bukkit Material 枚举名")
+                    ?: ResolveResult(false, code = "MATERIAL_NOT_FOUND", message = Lang.get("item-manager-api.material-not-found", "id" to parsed.itemId), source = "vanilla", suggestion = Lang.get("item-manager-api.material-not-found-suggestion"))
             }
         }
 
@@ -137,13 +133,13 @@ class ItemManagerAPI private constructor() {
                 reg.module.build(player, parsed.itemId)
             }
             if (built != null) return ResolveResult(true, built, source = reg.ownerKey)
-            return ResolveResult(false, code = "MODULE_BUILD_FAILED", message = "模块无法构建物品: $alias:${parsed.itemId}", source = reg.ownerKey, suggestion = "检查模块是否已注册、参数是否正确、以及物品 ID 是否存在")
+            return ResolveResult(false, code = "MODULE_BUILD_FAILED", message = Lang.get("item-manager-api.module-build-failed", "alias" to alias, "id" to parsed.itemId), source = reg.ownerKey, suggestion = Lang.get("item-manager-api.module-build-failed-suggestion"))
         }
 
-        val sourceType = ItemSourceType.fromId(alias) ?: return ResolveResult(false, code = "SOURCE_NOT_FOUND", message = "未找到物品源: $alias", source = alias, suggestion = "确认别名是否已注册，或是否需要先调用 registerBuiltinSources()")
+        val sourceType = ItemSourceType.fromId(alias) ?: return ResolveResult(false, code = "SOURCE_NOT_FOUND", message = Lang.get("item-manager-api.source-not-found", "alias" to alias), source = alias, suggestion = Lang.get("item-manager-api.source-not-found-suggestion"))
         val item = ItemSourceManager.getItem(sourceType.id, parsed.itemId, 1)
         return if (item != null) ResolveResult(true, item, source = sourceType.id)
-        else ResolveResult(false, code = "ITEM_NOT_FOUND", message = "物品源未返回结果: ${sourceType.id}:${parsed.itemId}", source = sourceType.id, suggestion = "检查后端插件是否可用，或该物品是否存在")
+        else ResolveResult(false, code = "ITEM_NOT_FOUND", message = Lang.get("item-manager-api.item-not-found", "source" to sourceType.id, "id" to parsed.itemId), source = sourceType.id, suggestion = Lang.get("item-manager-api.item-not-found-suggestion"))
     }
 
     private fun vanillaMaterial(spec: String): ItemStack? {
@@ -152,7 +148,6 @@ class ItemManagerAPI private constructor() {
         return ItemStack(material, 1)
     }
 
-    /** 将已注册的 ItemSource 同步为 ItemModule 别名 */
     fun registerBuiltinSources() {
         for (type in ItemSourceType.entries) {
             val source = ItemSourceManager.getSource(type.id) ?: continue

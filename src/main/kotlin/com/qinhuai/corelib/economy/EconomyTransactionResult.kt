@@ -1,6 +1,7 @@
 package com.qinhuai.corelib.economy
 
 import com.qinhuai.corelib.debug.DiagnosticResult
+import com.qinhuai.corelib.lang.Lang
 
 data class EconomyTransactionResult(
     val success: Boolean,
@@ -15,7 +16,7 @@ data class EconomyTransactionResult(
         } else {
             DiagnosticResult.fail(
                 code = code,
-                message = message ?: "经济操作失败",
+                message = message ?: Lang.get("economy-transaction-result.operation-failed"),
                 source = source,
                 suggestion = suggestion,
             )

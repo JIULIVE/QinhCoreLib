@@ -1,6 +1,12 @@
 # QinhCoreLib 配置文件
 # 秦淮系列插件核心库
 
+# 语言 / Language
+#   插件文本读取 lang/<language>/*.yml；缺失的条目自动回退英文 en_US。
+#   The plugin reads text from lang/<language>/*.yml; missing entries fall back to en_US.
+#   内置 built-in: zh_cn (简体中文) / en_US (English) / zh_tw (繁體中文) / ru_RU / fr_FR / vi_VN / es_ES
+language: zh_cn
+
 database:
   # 数据库类型: sqlite 或 mysql
   type: sqlite
@@ -44,6 +50,15 @@ javascript:
   default-function: main
   debug:
     print-stacktrace: false
+
+# 属性系统（QCL 原生属性后端，不装 AP/SX 也能用全套属性与伤害）
+# 全生态（QI/QSt/QF/QS/QC）统一从这里读后端选择，无需各插件各配。
+attribute:
+  # 后端选择：
+  #   native        ——（默认）QCL 自带原生属性后端，无需任何属性插件
+  #   attributeplus —— 改用 AttributePlus 接管属性（需装 AP，由 QinhItems 注册）
+  #   auto          —— 有可用的第三方属性后端则优先用它，否则回退 native
+  backend: native
 
 # 模块配置 (可以禁用不需要的模块)
 modules:

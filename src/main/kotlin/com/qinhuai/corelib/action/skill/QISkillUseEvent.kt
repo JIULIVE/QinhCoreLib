@@ -6,10 +6,6 @@ import org.bukkit.event.HandlerList
 import org.bukkit.event.player.PlayerEvent
 import org.bukkit.inventory.ItemStack
 
-/**
- * QinhItems → QinhSkills 技能触发事件（主链路入口）。
- * 类型必须在 QinhCoreLib，供 QI/QS 共用同一 EventBus 契约。
- */
 class QISkillUseEvent(
     player: Player,
     val payload: String,
@@ -20,7 +16,6 @@ class QISkillUseEvent(
     val rawContext: RawSkillContext? = null,
 ) : PlayerEvent(player), Cancellable {
 
-    /** 向后兼容字符串 trigger（QI action 表键 / 旧 API） */
     val trigger: String = trigger
 
     var skillHandled: Boolean = false

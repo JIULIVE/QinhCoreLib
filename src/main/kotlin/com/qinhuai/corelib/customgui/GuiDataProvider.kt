@@ -3,11 +3,6 @@ package com.qinhuai.corelib.customgui
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
-/**
- * 为 GUI 分页或动态槽位提供数据。插件注册后，在 YAML 里用 source-type / source-value 引用。
- *
- * 例：source-type: qcr  +  source-value: unlocked_crops
- */
 fun interface GuiPaginationListProvider {
     fun loadEntries(player: Player, gui: CustomGui, sourceValue: String): List<GuiPaginationEntry>
 }

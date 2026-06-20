@@ -1,10 +1,5 @@
 package com.qinhuai.corelib.debug
 
-/**
- * apiJar 公开边界清单。
- *
- * 目标：仅导出对外 API / 契约包，不包含内部实现细节。
- */
 object ApiJarManifest {
     private val exposedPackages = listOf(
         "com.qinhuai.corelib.api.item",

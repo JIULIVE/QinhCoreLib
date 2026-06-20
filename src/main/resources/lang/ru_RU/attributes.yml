@@ -1,0 +1,192 @@
+attack_damage:
+  display_name: "Урон атаки"
+  prefix: ""
+  suffix: ""
+attack_speed:
+  display_name: "Скорость атаки"
+  prefix: ""
+  suffix: ""
+physical_damage:
+  display_name: "Физический урон"
+  prefix: ""
+  suffix: "%"
+physical_crit_rate:
+  display_name: "Шанс физического крита"
+  prefix: ""
+  suffix: "%"
+physical_crit_damage:
+  display_name: "Урон физического крита"
+  prefix: ""
+  suffix: "%"
+armor_penetration:
+  display_name: "Пробитие брони"
+  prefix: ""
+  suffix: ""
+projectile_damage:
+  display_name: "Урон снарядов"
+  prefix: ""
+  suffix: "%"
+magic_attack:
+  display_name: "Магическая атака"
+  prefix: ""
+  suffix: ""
+magic_damage:
+  display_name: "Магический урон"
+  prefix: ""
+  suffix: "%"
+magic_crit_rate:
+  display_name: "Шанс магического крита"
+  prefix: ""
+  suffix: "%"
+magic_crit_damage:
+  display_name: "Урон магического крита"
+  prefix: ""
+  suffix: "%"
+magic_penetration:
+  display_name: "Магическое пробитие"
+  prefix: ""
+  suffix: ""
+skill_attack:
+  display_name: "Атака навыков"
+  prefix: ""
+  suffix: ""
+skill_damage:
+  display_name: "Урон навыков"
+  prefix: ""
+  suffix: "%"
+skill_crit_rate:
+  display_name: "Шанс крита навыков"
+  prefix: ""
+  suffix: "%"
+skill_crit_damage:
+  display_name: "Урон крита навыков"
+  prefix: ""
+  suffix: "%"
+true_attack:
+  display_name: "Чистый урон"
+  prefix: ""
+  suffix: ""
+true_damage:
+  display_name: "Бонус чистого урона"
+  prefix: ""
+  suffix: "%"
+pvp_damage:
+  display_name: "Урон в PvP"
+  prefix: ""
+  suffix: "%"
+pve_damage:
+  display_name: "Урон в PvE"
+  prefix: ""
+  suffix: "%"
+pvp_defense:
+  display_name: "Защита в PvP"
+  prefix: ""
+  suffix: "%"
+pve_defense:
+  display_name: "Защита в PvE"
+  prefix: ""
+  suffix: "%"
+defense:
+  display_name: "Защита"
+  prefix: ""
+  suffix: ""
+damage_reduction:
+  display_name: "Снижение урона"
+  prefix: ""
+  suffix: "%"
+dodge:
+  display_name: "Уклонение"
+  prefix: ""
+  suffix: "%"
+block_rate:
+  display_name: "Шанс блока"
+  prefix: ""
+  suffix: "%"
+parry:
+  display_name: "Парирование"
+  prefix: ""
+  suffix: "%"
+crit_resist:
+  display_name: "Сопротивление криту"
+  prefix: ""
+  suffix: "%"
+armor:
+  display_name: "Броня"
+  prefix: ""
+  suffix: ""
+armor_toughness:
+  display_name: "Прочность брони"
+  prefix: ""
+  suffix: ""
+knockback_resistance:
+  display_name: "Сопротивление отбрасыванию"
+  prefix: ""
+  suffix: "%"
+health:
+  display_name: "Здоровье"
+  prefix: ""
+  suffix: ""
+health_regen:
+  display_name: "Регенерация здоровья"
+  prefix: ""
+  suffix: ""
+max_mana:
+  display_name: "Максимум маны"
+  prefix: ""
+  suffix: ""
+mana_regen:
+  display_name: "Регенерация маны"
+  prefix: ""
+  suffix: ""
+max_stamina:
+  display_name: "Максимум выносливости"
+  prefix: ""
+  suffix: ""
+stamina_regen:
+  display_name: "Регенерация выносливости"
+  prefix: ""
+  suffix: ""
+movement_speed:
+  display_name: "Скорость передвижения"
+  prefix: ""
+  suffix: ""
+max_absorption:
+  display_name: "Максимум поглощения"
+  prefix: ""
+  suffix: ""
+luck:
+  display_name: "Удача"
+  prefix: ""
+  suffix: ""
+lifesteal:
+  display_name: "Вампиризм"
+  prefix: ""
+  suffix: "%"
+spell_vampirism:
+  display_name: "Магический вампиризм"
+  prefix: ""
+  suffix: "%"
+reflection:
+  display_name: "Отражение"
+  prefix: ""
+  suffix: "%"
+cooldown_reduction:
+  display_name: "Снижение перезарядки"
+  prefix: ""
+  suffix: "%"
+exp_bonus:
+  display_name: "Бонус опыта"
+  prefix: ""
+  suffix: "%"
+loot_bonus:
+  display_name: "Бонус добычи"
+  prefix: ""
+  suffix: "%"
+money_bonus:
+  display_name: "Бонус денег"
+  prefix: ""
+  suffix: "%"
+attack_knockback:
+  display_name: "Отбрасывание атакой"
+  prefix: ""
+  suffix: ""

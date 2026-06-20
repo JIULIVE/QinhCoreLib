@@ -1,9 +1,5 @@
 package com.qinhuai.corelib.debug
 
-/**
- * 统一平台状态模型：用于 `/qcl status`、启动汇总与后续健康检查。
- */
-
 data class PlatformStatus(
     val name: String,
     val version: String,

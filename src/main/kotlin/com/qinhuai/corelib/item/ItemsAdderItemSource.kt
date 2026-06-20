@@ -12,4 +12,11 @@ object ItemsAdderItemSource : ItemSource {
     }
 
     override fun isAvailable(): Boolean = ItemsAdderBridge.isAvailable()
+
+    override fun identify(stack: ItemStack): String? = ItemsAdderBridge.idFromItem(stack)
+
+    override fun matches(stack: ItemStack, id: String): Boolean {
+        val normalized = if (id.contains(':')) id else id.replaceFirst("_", ":")
+        return identify(stack) == normalized
+    }
 }

@@ -1,0 +1,6 @@
+api-jar-diagnostics.manifest-generated: "Public API package manifest generated"
+api-jar-diagnostics.boundary-generated: "Public API class manifest generated"
+api-jar-diagnostics.filter-hint: "Build should include only manifest public packages"
+api-jar-diagnostics.internal-packages-declared: "Internal packages declared, used for filtering and auditing"
+config-diagnostics.not-loaded: "Not loaded"
+startup-diagnostics.summary-generated: "Startup summary generated"

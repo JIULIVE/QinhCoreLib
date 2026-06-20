@@ -7,11 +7,6 @@ import org.incendo.cloud.parser.standard.StringParser
 import org.incendo.cloud.suggestion.BlockingSuggestionProvider
 import java.util.function.Supplier
 
-/**
- * Cloud 2.0 命令参数辅助（返回 [CommandComponent.Builder] 供 [org.incendo.cloud.Command.Builder.required] 使用）。
- *
- * 补全回调使用 [Supplier] 而非 Kotlin lambda，避免子插件与 CoreLib 各自加载 Kotlin 时的 [LinkageError]。
- */
 object QinhCloudComponents {
 
     private val stringDescriptor: ParserDescriptor<CommandSender, String> =

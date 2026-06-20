@@ -1,13 +1,8 @@
 package com.qinhuai.corelib.item
 
 import com.qinhuai.corelib.debug.DiagnosticResult
+import com.qinhuai.corelib.lang.Lang
 
-/**
- * 解析传奇系物品引用：
- * - {@code mm-海神三叉戟} · {@code mi-SWORD-Legendary} · {@code ni-blade::{"品质":"传说"}}
- * - {@code qinhitems:legendary_blade} · {@code vanilla:iron_ingot}
- * - {@code material-IRON_INGOT} · {@code type-WOOL}
- */
 object ItemReferenceParser {
 
     data class Parsed(
@@ -48,13 +43,12 @@ object ItemReferenceParser {
         val parsed = parse(ref)
             ?: return DiagnosticResult.fail(
                 code = "ITEM_REF_PARSE_FAILED",
-                message = "物品引用解析失败: $ref",
-                suggestion = "使用 namespace:id 或 alias-id 格式，例如 qinhitems:blade / mm-Dragon_Sword",
+                message = Lang.get("item-reference-parser.parse-failed", "ref" to ref),
+                suggestion = Lang.get("item-reference-parser.parse-suggestion"),
             )
         return DiagnosticResult.ok(parsed, source = "item-reference")
     }
 
-    /** {@code SWORD-Legendary_Blade} → {@code SWORD:Legendary_Blade} */
     private fun parseMmoItemsRest(rest: String): String {
         if (rest.contains(':')) return rest
         val idx = rest.indexOf('-')

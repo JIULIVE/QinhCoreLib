@@ -1,12 +1,10 @@
 package com.qinhuai.corelib.economy
 
+import com.qinhuai.corelib.lang.Lang
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 
-/**
- * 通过反射对接 ExcellentEconomy，避免编译期强依赖其 jar。
- */
 class ExcellentEconomyProvider(
     private val plugin: JavaPlugin,
 ) : EconomyProvider {
@@ -35,43 +33,43 @@ class ExcellentEconomyProvider(
 
     override fun deposit(player: OfflinePlayer, amount: Double, currencyId: String?): EconomyTransactionResult {
         val online = player.player
-            ?: return EconomyTransactionResult.fail("ExcellentEconomy 需要玩家在线", suggestion = "仅在线玩家可进行该操作", provider = id)
-        val api = api() ?: return EconomyTransactionResult.fail("ExcellentEconomy 不可用", suggestion = "确认 ExcellentEconomy 已安装并启用", provider = id)
+            ?: return EconomyTransactionResult.fail(Lang.get("excellent-economy-provider.require-online"), suggestion = Lang.get("excellent-economy-provider.require-online-suggestion"), provider = id)
+        val api = api() ?: return EconomyTransactionResult.fail(Lang.get("excellent-economy-provider.unavailable"), suggestion = Lang.get("excellent-economy-provider.unavailable-suggestion"), provider = id)
         val currency = resolveCurrency(api, currencyId)
-            ?: return EconomyTransactionResult.fail("货币不存在: ${currencyId ?: "(未指定)"}", code = "CURRENCY_NOT_FOUND", suggestion = "检查 currencyId 配置", provider = id)
+            ?: return EconomyTransactionResult.fail(Lang.get("excellent-economy-provider.currency-not-found", "id" to (currencyId ?: Lang.get("excellent-economy-provider.currency-unspecified"))), code = "CURRENCY_NOT_FOUND", suggestion = Lang.get("excellent-economy-provider.currency-not-found-suggestion"), provider = id)
         return if (invokeTransaction(api, "deposit", online, currency, amount)) {
             EconomyTransactionResult.ok(id)
         } else {
-            EconomyTransactionResult.fail("ExcellentEconomy 存款失败", suggestion = "检查货币状态与玩家余额", provider = id)
+            EconomyTransactionResult.fail(Lang.get("excellent-economy-provider.deposit-failed"), suggestion = Lang.get("excellent-economy-provider.transaction-failed-suggestion"), provider = id)
         }
     }
 
     override fun withdraw(player: OfflinePlayer, amount: Double, currencyId: String?): EconomyTransactionResult {
         val online = player.player
-            ?: return EconomyTransactionResult.fail("ExcellentEconomy 需要玩家在线", suggestion = "仅在线玩家可进行该操作", provider = id)
-        val api = api() ?: return EconomyTransactionResult.fail("ExcellentEconomy 不可用", suggestion = "确认 ExcellentEconomy 已安装并启用", provider = id)
+            ?: return EconomyTransactionResult.fail(Lang.get("excellent-economy-provider.require-online"), suggestion = Lang.get("excellent-economy-provider.require-online-suggestion"), provider = id)
+        val api = api() ?: return EconomyTransactionResult.fail(Lang.get("excellent-economy-provider.unavailable"), suggestion = Lang.get("excellent-economy-provider.unavailable-suggestion"), provider = id)
         val currency = resolveCurrency(api, currencyId)
-            ?: return EconomyTransactionResult.fail("货币不存在: ${currencyId ?: "(未指定)"}", code = "CURRENCY_NOT_FOUND", suggestion = "检查 currencyId 配置", provider = id)
+            ?: return EconomyTransactionResult.fail(Lang.get("excellent-economy-provider.currency-not-found", "id" to (currencyId ?: Lang.get("excellent-economy-provider.currency-unspecified"))), code = "CURRENCY_NOT_FOUND", suggestion = Lang.get("excellent-economy-provider.currency-not-found-suggestion"), provider = id)
         if (getBalance(online, currencyId) < amount) {
-            return EconomyTransactionResult.fail("余额不足", code = "INSUFFICIENT_FUNDS", suggestion = "减少消耗或补充余额", provider = id)
+            return EconomyTransactionResult.fail(Lang.get("excellent-economy-provider.insufficient-funds"), code = "INSUFFICIENT_FUNDS", suggestion = Lang.get("excellent-economy-provider.insufficient-funds-suggestion"), provider = id)
         }
         return if (invokeTransaction(api, "withdraw", online, currency, amount)) {
             EconomyTransactionResult.ok(id)
         } else {
-            EconomyTransactionResult.fail("ExcellentEconomy 扣款失败", suggestion = "检查货币状态与玩家余额", provider = id)
+            EconomyTransactionResult.fail(Lang.get("excellent-economy-provider.withdraw-failed"), suggestion = Lang.get("excellent-economy-provider.transaction-failed-suggestion"), provider = id)
         }
     }
 
     override fun setBalance(player: OfflinePlayer, amount: Double, currencyId: String?): EconomyTransactionResult {
         val online = player.player
-            ?: return EconomyTransactionResult.fail("ExcellentEconomy 需要玩家在线", suggestion = "仅在线玩家可进行该操作", provider = id)
-        val api = api() ?: return EconomyTransactionResult.fail("ExcellentEconomy 不可用", suggestion = "确认 ExcellentEconomy 已安装并启用", provider = id)
+            ?: return EconomyTransactionResult.fail(Lang.get("excellent-economy-provider.require-online"), suggestion = Lang.get("excellent-economy-provider.require-online-suggestion"), provider = id)
+        val api = api() ?: return EconomyTransactionResult.fail(Lang.get("excellent-economy-provider.unavailable"), suggestion = Lang.get("excellent-economy-provider.unavailable-suggestion"), provider = id)
         val currency = resolveCurrency(api, currencyId)
-            ?: return EconomyTransactionResult.fail("货币不存在: ${currencyId ?: "(未指定)"}", code = "CURRENCY_NOT_FOUND", suggestion = "检查 currencyId 配置", provider = id)
+            ?: return EconomyTransactionResult.fail(Lang.get("excellent-economy-provider.currency-not-found", "id" to (currencyId ?: Lang.get("excellent-economy-provider.currency-unspecified"))), code = "CURRENCY_NOT_FOUND", suggestion = Lang.get("excellent-economy-provider.currency-not-found-suggestion"), provider = id)
         return if (invokeTransaction(api, "setBalance", online, currency, amount)) {
             EconomyTransactionResult.ok(id)
         } else {
-            EconomyTransactionResult.fail("ExcellentEconomy 设置余额失败", suggestion = "检查货币状态与玩家余额", provider = id)
+            EconomyTransactionResult.fail(Lang.get("excellent-economy-provider.set-balance-failed"), suggestion = Lang.get("excellent-economy-provider.transaction-failed-suggestion"), provider = id)
         }
     }
 

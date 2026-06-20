@@ -5,9 +5,6 @@ import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerToggleSneakEvent
 import org.bukkit.inventory.EquipmentSlot
 
-/**
- * QI Input Adapter — 仅 Minecraft Event → [TriggerType]，禁止 skill 选择/业务逻辑。
- */
 object QiTriggerMapper {
 
     fun fromInteract(event: PlayerInteractEvent): TriggerType? {

@@ -2,13 +2,10 @@ package com.qinhuai.corelib.item
 
 import com.qinhuai.corelib.QinhCoreLib
 import com.qinhuai.corelib.api.item.ItemManagerAPI
+import com.qinhuai.corelib.lang.Lang
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 
-/**
- * 传奇系 Groovy 物品模块加载器（反射调用，无编译期 Groovy 依赖）。
- * 脚本目录：plugins/QinhCoreLib/item-modules/ 下的 .groovy 文件
- */
 object GroovyItemModuleLoader {
 
     private var groovyClassLoader: Any? = null
@@ -41,7 +38,7 @@ object GroovyItemModuleLoader {
     fun reload(plugin: JavaPlugin): Int {
         unload()
         if (!isGroovyAvailable()) {
-            plugin.logger.info("[ItemManager] Groovy 未就绪，跳过 item-modules 脚本（可在 plugin.yml libraries 添加 groovy）")
+            plugin.logger.info(Lang.get("item-manager-bootstrap.groovy-not-ready"))
             return 0
         }
 
@@ -64,9 +61,9 @@ object GroovyItemModuleLoader {
                 clazz.getMethod("onGroovyRegister").invoke(null)
                 loadedClasses += clazz
                 count++
-                plugin.logger.info("[ItemManager] 已加载 Groovy 物品模块: ${script.name}")
+                plugin.logger.info(Lang.get("item-manager-bootstrap.module-loaded", "name" to script.name))
             } catch (ex: Exception) {
-                plugin.logger.warning("[ItemManager] Groovy 脚本 ${script.name} 加载失败: ${ex.message}")
+                plugin.logger.warning(Lang.get("item-manager-bootstrap.script-load-failed", "name" to script.name, "error" to ex.message))
             }
         }
         return count

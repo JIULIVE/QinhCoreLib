@@ -1,12 +1,12 @@
 package com.qinhuai.corelib.debug
 
 import com.qinhuai.corelib.bootstrap.StartupReporter
+import com.qinhuai.corelib.lang.Lang
 
 object StartupDiagnostics {
     fun status(): List<BridgeStatus> {
         val hooks = mutableListOf<BridgeStatus>()
-        // StartupReporter only exposes summary counters, so we surface a lightweight diagnostic layer here.
-        hooks += BridgeDiagnostics.available("StartupSummary", source = "QCL", hint = "启动摘要已生成")
+        hooks += BridgeDiagnostics.available("StartupSummary", source = "QCL", hint = Lang.get("startup-diagnostics.summary-generated"))
         return hooks
     }
 

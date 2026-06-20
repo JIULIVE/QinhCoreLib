@@ -7,10 +7,6 @@ import org.bukkit.event.inventory.ClickType
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 
-/**
- * 由代码动态绘制的 GUI，与 [CustomGui] 共用 [CustomGuiListener]。
- * 用于作物列表等无法完全用 YAML 描述的界面。
- */
 class DynamicGui(
     val player: Player,
     val rows: Int,
@@ -37,14 +33,12 @@ class DynamicGui(
         renderer.render(this, inv)
     }
 
-    /** 玩家关闭界面或切换到其他界面时由监听器调用 */
     fun onPlayerClose() {
         closeSound?.let { playSound(it) }
         CustomGuiListener.unregister(this)
         inventory = null
     }
 
-    /** 代码主动关闭（发消息、气泡提示等） */
     fun close() {
         val inv = inventory
         onPlayerClose()

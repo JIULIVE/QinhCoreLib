@@ -4,9 +4,9 @@ import com.qinhuai.corelib.debug.BridgeDiagnostics
 import com.qinhuai.corelib.debug.BridgeStatus
 import com.qinhuai.corelib.debug.BridgeStatusRegistry
 import com.qinhuai.corelib.debug.DiagnosticResult
+import com.qinhuai.corelib.lang.Lang
 import org.bukkit.inventory.ItemStack
 
-/** 反射桥接 MagicGem（pku.yim.magicgem）— 无编译期依赖 */
 object MagicGemBridge {
 
     private var available: Boolean? = null
@@ -52,9 +52,9 @@ object MagicGemBridge {
     fun hasGem(id: String): Boolean = getGemItem(id) != null
 
     fun status(): BridgeStatus = if (available == true) {
-        BridgeDiagnostics.available("MagicGem", source = "MagicGem", hint = "反射绑定成功")
+        BridgeDiagnostics.available("MagicGem", source = "MagicGem", hint = Lang.get("magic-gem-bridge.reflect-bind-success"))
     } else {
-        BridgeDiagnostics.unavailable("MagicGem", source = "MagicGem", hint = "未检测到 MagicGem 或反射失败")
+        BridgeDiagnostics.unavailable("MagicGem", source = "MagicGem", hint = Lang.get("magic-gem-bridge.not-detected"))
     }
 
     fun diagnose(): DiagnosticResult<BridgeStatus> = BridgeDiagnostics.diagnose("MagicGem", isAvailable(), source = "MagicGem", hint = "gemManager=${gemManagerClass != null}")

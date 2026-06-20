@@ -1,5 +1,6 @@
 package com.qinhuai.corelib.economy
 
+import com.qinhuai.corelib.lang.Lang
 import net.milkbowl.vault.economy.Economy
 import net.milkbowl.vault.economy.EconomyResponse
 import org.bukkit.OfflinePlayer
@@ -24,30 +25,30 @@ class VaultEconomyProvider(
     }
 
     override fun deposit(player: OfflinePlayer, amount: Double, currencyId: String?): EconomyTransactionResult {
-        val eco = economy() ?: return EconomyTransactionResult.fail("Vault 经济不可用", suggestion = "确认 Vault 及经济实现插件是否已安装并启用", provider = id)
+        val eco = economy() ?: return EconomyTransactionResult.fail(Lang.get("vault-economy-provider.unavailable"), suggestion = Lang.get("vault-economy-provider.unavailable-suggestion"), provider = id)
         val response: EconomyResponse = eco.depositPlayer(player, amount)
         return if (response.transactionSuccess()) {
             EconomyTransactionResult.ok(id)
         } else {
-            EconomyTransactionResult.fail(response.errorMessage ?: "Vault 存款失败", suggestion = "检查玩家余额、经济后端状态与权限", provider = id)
+            EconomyTransactionResult.fail(response.errorMessage ?: Lang.get("vault-economy-provider.deposit-failed"), suggestion = Lang.get("vault-economy-provider.deposit-failed-suggestion"), provider = id)
         }
     }
 
     override fun withdraw(player: OfflinePlayer, amount: Double, currencyId: String?): EconomyTransactionResult {
-        val eco = economy() ?: return EconomyTransactionResult.fail("Vault 经济不可用", suggestion = "确认 Vault 及经济实现插件是否已安装并启用", provider = id)
+        val eco = economy() ?: return EconomyTransactionResult.fail(Lang.get("vault-economy-provider.unavailable"), suggestion = Lang.get("vault-economy-provider.unavailable-suggestion"), provider = id)
         if (!eco.has(player, amount)) {
-            return EconomyTransactionResult.fail("余额不足", code = "INSUFFICIENT_FUNDS", suggestion = "减少消耗或补充余额", provider = id)
+            return EconomyTransactionResult.fail(Lang.get("vault-economy-provider.insufficient-funds"), code = "INSUFFICIENT_FUNDS", suggestion = Lang.get("vault-economy-provider.insufficient-funds-suggestion"), provider = id)
         }
         val response: EconomyResponse = eco.withdrawPlayer(player, amount)
         return if (response.transactionSuccess()) {
             EconomyTransactionResult.ok(id)
         } else {
-            EconomyTransactionResult.fail(response.errorMessage ?: "Vault 扣款失败", suggestion = "检查经济后端响应与玩家状态", provider = id)
+            EconomyTransactionResult.fail(response.errorMessage ?: Lang.get("vault-economy-provider.withdraw-failed"), suggestion = Lang.get("vault-economy-provider.withdraw-failed-suggestion"), provider = id)
         }
     }
 
     override fun setBalance(player: OfflinePlayer, amount: Double, currencyId: String?): EconomyTransactionResult {
-        val eco = economy() ?: return EconomyTransactionResult.fail("Vault 经济不可用", suggestion = "确认 Vault 及经济实现插件是否已安装并启用", provider = id)
+        val eco = economy() ?: return EconomyTransactionResult.fail(Lang.get("vault-economy-provider.unavailable"), suggestion = Lang.get("vault-economy-provider.unavailable-suggestion"), provider = id)
         val current = eco.getBalance(player)
         return when {
             current == amount -> EconomyTransactionResult.ok(id)

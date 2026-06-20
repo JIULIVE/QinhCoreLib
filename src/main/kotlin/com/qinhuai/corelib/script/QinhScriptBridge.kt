@@ -6,16 +6,11 @@ import org.bukkit.plugin.Plugin
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 
-/**
- * 秦淮系列 JavaScript 桥接（GraalJS）。
- *
- * 脚本路径：`命名空间:相对路径.js[:函数名]`
- * 例：`qinhitems:hooks/craft.js:check`、`global:example.js`
- */
 object QinhScriptBridge {
 
     private val repository = ScriptRepository()
     private val pluginScriptDirs = ConcurrentHashMap<String, File>()
+    private val sourceCache = ConcurrentHashMap<String, ScriptSource>()
     private var engine: GraalJavaScriptEngine? = null
     private var config: QinhScriptConfig = QinhScriptConfig()
     private var initialized = false
@@ -23,6 +18,7 @@ object QinhScriptBridge {
     fun init(plugin: Plugin = QinhCoreLib.instance) {
         engine?.close()
         engine = null
+        sourceCache.clear()
         config = QinhScriptConfig.fromPlugin()
         if (!config.enabled || !GraalJavaScriptEngine.isRuntimeAvailable()) {
             initialized = true
@@ -55,13 +51,14 @@ object QinhScriptBridge {
 
     fun registerRoot(namespace: String, directory: File) {
         repository.registerRoot(namespace, directory)
+        sourceCache.clear()
     }
 
     fun unregisterRoot(namespace: String) {
         repository.unregisterRoot(namespace)
+        sourceCache.clear()
     }
 
-    /** 子插件标准目录：plugins/PluginName/scripts */
     fun registerPluginScripts(plugin: Plugin, namespace: String) {
         val dir = File(plugin.dataFolder, "scripts")
         if (!dir.exists()) {
@@ -86,7 +83,8 @@ object QinhScriptBridge {
         if (call.logicalPath.isBlank()) {
             return ScriptDiagnostics.parseFailed(reference).let { ScriptExecutionResult.fail(it.message, it.code, it.suggestion) }
         }
-        val source = repository.find(call.logicalPath)
+        val source = sourceCache[call.logicalPath]
+            ?: repository.find(call.logicalPath)?.also { sourceCache[call.logicalPath] = it }
             ?: return ScriptDiagnostics.notFound(call.logicalPath).let { ScriptExecutionResult.fail(it.message, it.code, it.suggestion) }
         return engine!!.execute(source, call.functionName, context)
     }

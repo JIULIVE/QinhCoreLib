@@ -4,7 +4,7 @@
 
 ## 版本
 
-- 当前版本：`1.1.0`
+- 当前版本：`1.2.0`
 - 目标运行环境：Paper / Purpur / Spigot `1.21.11+`
 - Java：`25+`
 
@@ -18,6 +18,7 @@ QinhCoreLib 不是单纯的工具包，而是整个生态的底座：
 - 提供脚本桥 `QinhScriptApi`
 - 提供经济、数据库、PDC、PlaceholderAPI 入口
 - 为 `QinhItems` / `QinhSkills` / `QinhForge` / `QinhStrengthen` / `QCR` 提供公共基础能力
+- 提供**原生属性系统**与**多语言（i18n）**
 
 ## 主要能力
 
@@ -52,7 +53,22 @@ QinhCoreLib 对外暴露的主要 API 包包括：
 
 这些 API 面会作为 `apiJar` 的核心导出边界。
 
-### 3. 配置与运行时
+### 3. 原生属性系统（v1.2.0）
+
+内置 `native` 属性后端，**不装任何属性插件**也能用全套属性与伤害结算（攻击 / 暴击 / 防御 / 闪避 / 元素等），全生态分源叠加。
+
+- `attributes.yml`：自定义属性（大类 / 伤害类型 / 上下限 / 战力）+ **JS 钩子**（`on_damage_dealt` / `on_damage_taken` / `on_kill` / `on_tick` / `on_equip` / `on_unequip`），脚本放 `scripts/attributes/*.js`。
+- `elements.yml`：**元素系统**，每元素自动生成「伤害 / 增伤 / 抗性」，支持五行相生相克。
+- `attribute.backend`：`native`（默认）/ `attributeplus` / `auto`，可切换后端。
+
+### 4. 多语言（i18n，v1.2.0）
+
+`Lang` 系统：所有提示文本读取 `lang/<语言>/*.yml`，缺失键自动回退 `en_US`；`config.yml` 用 `language` 切换。
+
+- 内置七种语言：`zh_cn` / `en_US` / `zh_tw` / `ru_RU` / `fr_FR` / `vi_VN` / `es_ES`。
+- 属性显示名按语言加载（`lang/<语言>/attributes.yml`）；服主直接编辑 yml 即可改任意文案，无需改源码。
+
+### 5. 配置与运行时
 
 - `plugin.yml` 已声明 Kotlin、GraalJS 与 Groovy 运行库
 - `QinhCoreLib` 会在启动时初始化经济、脚本、物品源与模块系统

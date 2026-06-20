@@ -1,9 +1,5 @@
 package com.qinhuai.corelib.debug
 
-/**
- * 统一调试/追踪模型：用于解释为什么没触发、哪个条件失败、哪个 action 没执行、哪个变量为空。
- */
-
 data class TraceEvent(
     val stage: String,
     val nodeId: String,

@@ -8,12 +8,10 @@ import com.qinhuai.corelib.debug.PlatformStatus
 import com.qinhuai.corelib.debug.TraceContext
 import com.qinhuai.corelib.economy.EconomyBridge
 import com.qinhuai.corelib.item.ItemSourceManager
+import com.qinhuai.corelib.lang.Lang
 import com.qinhuai.corelib.script.QinhScriptBridge
 import org.bukkit.Bukkit
 
-/**
- * 卫星插件（QI / QSt / QF）启动时探测已接入的软依赖。
- */
 object EcosystemStartupProbe {
 
     data class Hook(val name: String, val role: String)
@@ -52,20 +50,20 @@ object EcosystemStartupProbe {
             val p = pm.getPlugin(name)
             if (p != null && p.isEnabled) out.add(Hook(name, role))
         }
-        plug("QinhItems", "物品库")
-        plug("QinhSkills", "技能")
-        plug("QinhForge", "锻造")
-        plug("QinhStrengthen", "强化")
-        plug("QCR", "作物机器人")
-        plug("AttributePlus", "属性")
-        plug("LegendCore", "Legendinlay 核心")
-        plug("Legendinlay", "宝石·传奇")
-        plug("MagicGem", "宝石·MG")
+        plug("QinhItems", Lang.get("ecosystem-startup-probe.role-item-library"))
+        plug("QinhSkills", Lang.get("ecosystem-startup-probe.role-skill"))
+        plug("QinhForge", Lang.get("ecosystem-startup-probe.role-forge"))
+        plug("QinhStrengthen", Lang.get("ecosystem-startup-probe.role-strengthen"))
+        plug("QCR", Lang.get("ecosystem-startup-probe.role-crop-robot"))
+        plug("AttributePlus", Lang.get("ecosystem-startup-probe.role-attribute"))
+        plug("LegendCore", Lang.get("ecosystem-startup-probe.role-legend-core"))
+        plug("Legendinlay", Lang.get("ecosystem-startup-probe.role-gem-legend"))
+        plug("MagicGem", Lang.get("ecosystem-startup-probe.role-gem-mg"))
         plug("MMOItems", "MMOItems")
         plug("NeigeItems", "NeigeItems")
         plug("MythicMobs", "MythicMobs")
-        plug("PlaceholderAPI", "占位符")
-        plug("Vault", "经济 Vault")
+        plug("PlaceholderAPI", Lang.get("ecosystem-startup-probe.role-placeholder"))
+        plug("Vault", Lang.get("ecosystem-startup-probe.role-economy-vault"))
         return out
     }
 
@@ -75,7 +73,7 @@ object EcosystemStartupProbe {
             available = QinhScriptBridge.isAvailable(),
             enabled = QinhScriptBridge.isAvailable(),
             source = "ScriptBridge",
-            message = if (QinhScriptBridge.isAvailable()) "脚本桥可用" else "脚本桥不可用",
+            message = if (QinhScriptBridge.isAvailable()) Lang.get("ecosystem-startup-probe.script-bridge-available") else Lang.get("ecosystem-startup-probe.script-bridge-unavailable"),
             recoverable = true,
         )
         val bridges = probePluginHooks().map {
@@ -84,7 +82,7 @@ object EcosystemStartupProbe {
                 available = true,
                 enabled = true,
                 source = it.role,
-                message = "已探测到软依赖",
+                message = Lang.get("ecosystem-startup-probe.soft-dep-detected"),
                 recoverable = true,
             )
         } + BridgeStatusRegistry.all() + scriptBridge
@@ -93,13 +91,13 @@ object EcosystemStartupProbe {
                 name = it,
                 enabled = true,
                 available = true,
-                message = "物品源可用",
+                message = Lang.get("ecosystem-startup-probe.item-source-available"),
             )
         } + listOf(
-            ModuleStatus("QinhSkills", Bukkit.getPluginManager().getPlugin("QinhSkills")?.isEnabled == true, Bukkit.getPluginManager().getPlugin("QinhSkills")?.isEnabled == true, "技能模块"),
-            ModuleStatus("QinhForge", Bukkit.getPluginManager().getPlugin("QinhForge")?.isEnabled == true, Bukkit.getPluginManager().getPlugin("QinhForge")?.isEnabled == true, "锻造模块"),
-            ModuleStatus("QinhStrengthen", Bukkit.getPluginManager().getPlugin("QinhStrengthen")?.isEnabled == true, Bukkit.getPluginManager().getPlugin("QinhStrengthen")?.isEnabled == true, "强化模块"),
-            ModuleStatus("QCR", Bukkit.getPluginManager().getPlugin("QCR")?.isEnabled == true, Bukkit.getPluginManager().getPlugin("QCR")?.isEnabled == true, "作物机器人模块"),
+            ModuleStatus("QinhSkills", Bukkit.getPluginManager().getPlugin("QinhSkills")?.isEnabled == true, Bukkit.getPluginManager().getPlugin("QinhSkills")?.isEnabled == true, Lang.get("ecosystem-startup-probe.module-skill")),
+            ModuleStatus("QinhForge", Bukkit.getPluginManager().getPlugin("QinhForge")?.isEnabled == true, Bukkit.getPluginManager().getPlugin("QinhForge")?.isEnabled == true, Lang.get("ecosystem-startup-probe.module-forge")),
+            ModuleStatus("QinhStrengthen", Bukkit.getPluginManager().getPlugin("QinhStrengthen")?.isEnabled == true, Bukkit.getPluginManager().getPlugin("QinhStrengthen")?.isEnabled == true, Lang.get("ecosystem-startup-probe.module-strengthen")),
+            ModuleStatus("QCR", Bukkit.getPluginManager().getPlugin("QCR")?.isEnabled == true, Bukkit.getPluginManager().getPlugin("QCR")?.isEnabled == true, Lang.get("ecosystem-startup-probe.module-crop-robot")),
         )
         val economyDiagnose = EconomyBridge.diagnose()
         val economyBridges = EconomyBridge.bridgeStatuses() + availableEconomies().map {
@@ -108,7 +106,7 @@ object EcosystemStartupProbe {
                 available = true,
                 enabled = true,
                 source = "Economy",
-                message = "经济提供器可用",
+                message = Lang.get("ecosystem-startup-probe.economy-provider-available"),
                 recoverable = true,
             )
         }
@@ -120,10 +118,10 @@ object EcosystemStartupProbe {
             bridges = bridges + economyBridges,
             health = when {
                 !economyDiagnose.success -> HealthReport.degraded(economyDiagnose.code, economyDiagnose.message, economyDiagnose.suggestion)
-                bridges.isNotEmpty() || modules.isNotEmpty() -> HealthReport.healthy("平台探测完成")
-                else -> HealthReport.degraded("NO_HOOK", "未发现可用软依赖", "确认相关插件是否已安装并启用")
+                bridges.isNotEmpty() || modules.isNotEmpty() -> HealthReport.healthy(Lang.get("ecosystem-startup-probe.platform-probe-done"))
+                else -> HealthReport.degraded("NO_HOOK", Lang.get("ecosystem-startup-probe.no-soft-dep"), Lang.get("ecosystem-startup-probe.no-soft-dep-hint"))
             },
-            trace = TraceContext(traceId = "qcl-status", module = name, bridge = "startup-probe", result = if (economyDiagnose.success) "ok" else economyDiagnose.code, hint = "用于 /qcl status"),
+            trace = TraceContext(traceId = "qcl-status", module = name, bridge = "startup-probe", result = if (economyDiagnose.success) "ok" else economyDiagnose.code, hint = Lang.get("ecosystem-startup-probe.trace-hint")),
         )
     }
 
@@ -132,22 +130,23 @@ object EcosystemStartupProbe {
         val economies = availableEconomies()
         val hooks = probePluginHooks()
         val lines = mutableListOf<String>()
-        lines += "§6[$prefix] §a软依赖探测"
+        lines += Lang.get("ecosystem-startup-probe.summary-header", "prefix" to prefix)
         if (sources.isNotEmpty()) {
-            lines += "§7  物品源 §f${sources.size}§7 个: §f${sources.joinToString("§7, §f")}"
+            lines += Lang.get("ecosystem-startup-probe.summary-item-sources", "count" to sources.size, "list" to sources.joinToString("§7, §f"))
         } else {
-            lines += "§7  物品源: §c无可用源"
+            lines += Lang.get("ecosystem-startup-probe.summary-no-item-source")
         }
         if (economies.isNotEmpty()) {
-            lines += "§7  经济: §f${economies.joinToString("§7, §f")}"
+            lines += Lang.get("ecosystem-startup-probe.summary-economy", "list" to economies.joinToString("§7, §f"))
         }
-        val attr = hooks.filter { it.role.contains("属性") }
+        val attrRole = Lang.get("ecosystem-startup-probe.role-attribute")
+        val attr = hooks.filter { it.role.contains(attrRole) }
         if (attr.isNotEmpty()) {
-            lines += "§7  属性插件: §f${attr.joinToString { it.name }}"
+            lines += Lang.get("ecosystem-startup-probe.summary-attribute-plugins", "list" to attr.joinToString { it.name })
         }
-        val others = hooks.filter { !it.role.contains("属性") && it.name != "Vault" }
+        val others = hooks.filter { !it.role.contains(attrRole) && it.name != "Vault" }
         if (others.isNotEmpty()) {
-            lines += "§7  已接入: §f${others.joinToString { "${it.name}(${it.role})" }}"
+            lines += Lang.get("ecosystem-startup-probe.summary-hooked", "list" to others.joinToString { "${it.name}(${it.role})" })
         }
         extraLines.forEach { lines += it }
         return lines

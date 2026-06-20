@@ -4,6 +4,7 @@ import com.qinhuai.corelib.QinhCoreLib
 import com.qinhuai.corelib.debug.BridgeStatus
 import com.qinhuai.corelib.debug.BridgeStatusRegistry
 import com.qinhuai.corelib.debug.DiagnosticResult
+import com.qinhuai.corelib.lang.Lang
 import org.bukkit.NamespacedKey
 import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.persistence.PersistentDataType
@@ -92,7 +93,7 @@ class PdcService(private val namespace: String) {
         available = true,
         enabled = true,
         source = namespace,
-        message = "PDC 服务可用",
+        message = Lang.get("pdc-service.available"),
         recoverable = true,
     )
 

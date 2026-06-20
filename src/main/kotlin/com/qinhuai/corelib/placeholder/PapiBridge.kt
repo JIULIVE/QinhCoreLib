@@ -10,11 +10,8 @@ import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
 import com.qinhuai.corelib.util.ServerCompat
+import com.qinhuai.corelib.lang.Lang
 
-/**
- * PlaceholderAPI 桥接：秦淮系列插件统一经 QinhCoreLib 使用 PAPI。
- * 服务端未安装 PlaceholderAPI 时所有方法安全降级。
- */
 object PapiBridge {
 
     private val enabled: Boolean by lazy {
@@ -30,7 +27,7 @@ object PapiBridge {
         available = enabled,
         enabled = enabled,
         source = "PAPI",
-        message = if (enabled) "占位符桥可用" else "占位符桥不可用",
+        message = if (enabled) Lang.get("papi-bridge.status-available") else Lang.get("papi-bridge.status-unavailable"),
         recoverable = true,
     )
 

@@ -11,11 +11,9 @@ import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.plugin.Plugin
 import org.bukkit.potion.PotionEffectType
+import com.qinhuai.corelib.lang.Lang
 import java.util.logging.Logger
 
-/**
- * Paper / Purpur / Spigot 兼容与版本校验（MC 1.21.11+，Java 25+；Purpur/Paper 26.1 服务端需 JDK 25）。
- */
 object ServerCompat {
 
     const val MIN_JAVA_VERSION = 25
@@ -44,7 +42,6 @@ object ServerCompat {
         platform == PlatformKind.PAPER || platform == PlatformKind.PURPUR
     }
 
-    /** Paper/Purpur 聊天事件；纯 Spigot 上为 false。 */
     val supportsAsyncChatEvent: Boolean by lazy {
         classExists("io.papermc.paper.event.player.AsyncChatEvent")
     }
@@ -90,12 +87,10 @@ object ServerCompat {
         return null
     }
 
-    /** Kotlin 通过 plugin.yml libraries 加载，纯 Spigot 无此能力。 */
     fun warnIfKotlinLibrariesUnsupported(logger: Logger) {
         if (!supportsPluginLibraries) {
             logger.warning(
-                "[Qinh系列] 当前为 ${platformLabel()}，不支持 plugin.yml libraries；" +
-                    "秦淮 Kotlin 插件需 Paper / Purpur，否则可能无法启动。",
+                Lang.get("server-compat.kotlin-libraries-unsupported", "platform" to platformLabel()),
             )
         }
     }
@@ -103,26 +98,28 @@ object ServerCompat {
     fun validateJava(): String? {
         val feature = Runtime.version().feature()
         return if (feature < MIN_JAVA_VERSION) {
-            "需要 Java $MIN_JAVA_VERSION 或更高版本（Purpur 26.1 需 JDK 25；当前: $feature）"
+            Lang.get("server-compat.java-version-too-low", "min" to MIN_JAVA_VERSION, "current" to feature)
         } else {
             null
         }
     }
 
     fun validateMinecraftVersion(): String? {
-        val parts = parseBukkitVersion() ?: return "无法识别服务端版本，需要 Minecraft 1.21.$MIN_MC_PATCH 或更高"
+        val parts = parseBukkitVersion()
+            ?: return Lang.get("server-compat.mc-version-unrecognized", "patch" to MIN_MC_PATCH)
         val (major, minor, patch) = parts
-        if (major < 1) return "需要 Minecraft 1.21.$MIN_MC_PATCH+（当前: ${bukkitVersionLabel()}）"
+        if (major < 1) {
+            return Lang.get("server-compat.mc-version-too-low", "patch" to MIN_MC_PATCH, "current" to bukkitVersionLabel())
+        }
         if (major == 1 && minor < 21) {
-            return "需要 Minecraft 1.21.$MIN_MC_PATCH+（当前: ${bukkitVersionLabel()}）"
+            return Lang.get("server-compat.mc-version-too-low", "patch" to MIN_MC_PATCH, "current" to bukkitVersionLabel())
         }
         if (major == 1 && minor == 21 && patch < MIN_MC_PATCH) {
-            return "需要 Minecraft 1.21.$MIN_MC_PATCH+（当前: ${bukkitVersionLabel()}）"
+            return Lang.get("server-compat.mc-version-too-low", "patch" to MIN_MC_PATCH, "current" to bukkitVersionLabel())
         }
         return null
     }
 
-    /** @return (major, minor, patch) 例如 1.21.11 → (1, 21, 11) */
     fun parseBukkitVersion(): Triple<Int, Int, Int>? {
         val raw = bukkitVersionLabel()
         val core = raw.substringBefore('-').substringBefore('_')
@@ -145,11 +142,9 @@ object ServerCompat {
             val method = meta.javaClass.getMethod("setMaxStackSize", Int::class.javaPrimitiveType)
             method.invoke(meta, size)
         } catch (_: ReflectiveOperationException) {
-            // 部分 Spigot 构建未暴露自定义堆叠
         }
     }
 
-    /** 将配置中的枚举名（如 ENTITY_PLAYER_LEVELUP）转为 registry 键并解析。 */
     fun resolveSound(name: String): Sound? =
         registryGet(Registry.SOUNDS, *legacyNameCandidates(name))
 

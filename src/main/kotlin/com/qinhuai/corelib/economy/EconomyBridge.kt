@@ -5,6 +5,7 @@ import com.qinhuai.corelib.bootstrap.StartupReporter
 import com.qinhuai.corelib.debug.BridgeStatus
 import com.qinhuai.corelib.debug.BridgeStatusRegistry
 import com.qinhuai.corelib.debug.DiagnosticResult
+import com.qinhuai.corelib.lang.Lang
 import org.bukkit.OfflinePlayer
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.Locale
@@ -50,7 +51,7 @@ object EconomyBridge {
                 available = provider.isAvailable(),
                 enabled = provider.isAvailable(),
                 source = "EconomyProvider",
-                message = if (provider.isAvailable()) "经济后端可用" else "经济后端不可用",
+                message = if (provider.isAvailable()) Lang.get("economy-bridge.backend-available") else Lang.get("economy-bridge.backend-unavailable"),
                 recoverable = true,
             ),
         )
@@ -62,7 +63,7 @@ object EconomyBridge {
         try {
             registerProvider(factory())
         } catch (t: Throwable) {
-            plugin.logger.warning("[QinhCoreLib] 注册经济后端 $pluginName 失败: ${t.message}")
+            plugin.logger.warning(Lang.get("economy-bridge.register-failed", "plugin" to pluginName, "error" to t.message))
         }
     }
 
@@ -82,15 +83,11 @@ object EconomyBridge {
             available = provider.isAvailable(),
             enabled = provider.isAvailable(),
             source = "Economy",
-            message = if (provider.isAvailable()) "可用" else "不可用",
+            message = if (provider.isAvailable()) Lang.get("common.available") else Lang.get("common.unavailable"),
             recoverable = true,
         )
     }
 
-    /**
-     * @param providerId auto / vault / excellenteconomy（别名 ee）
-     * @param currencyId Vault 可空；EE 建议指定 money、silver、gold 等
-     */
     fun selectProvider(providerId: String?, currencyId: String?): EconomyProvider? {
         val normalized = normalizeId(providerId ?: defaultProviderId)
         if (normalized.isBlank() || normalized == "auto") {
@@ -150,10 +147,10 @@ object EconomyBridge {
         currencyId: String? = null,
     ): EconomyTransactionResult {
         val provider = selectProvider(providerId, resolveCurrencyId(currencyId))
-            ?: return EconomyTransactionResult.fail("没有可用的经济后端", code = "NO_PROVIDER", suggestion = "检查 Vault / ExcellentEconomy / PlayerPoints 是否已安装", provider = "economy")
+            ?: return EconomyTransactionResult.fail(Lang.get("economy-bridge.no-provider"), code = "NO_PROVIDER", suggestion = Lang.get("economy-bridge.no-provider-suggestion"), provider = "economy")
         val currency = effectiveCurrency(provider, currencyId)
         if (provider.id == "excellenteconomy" && currency.isNullOrBlank()) {
-            return EconomyTransactionResult.fail("ExcellentEconomy 需要指定 currency", code = "CURRENCY_REQUIRED", suggestion = "传入 money / silver / gold 等货币ID", provider = provider.id)
+            return EconomyTransactionResult.fail(Lang.get("economy-bridge.currency-required"), code = "CURRENCY_REQUIRED", suggestion = Lang.get("economy-bridge.currency-required-suggestion"), provider = provider.id)
         }
         return provider.deposit(player, amount, currency).copy(provider = provider.id)
     }
@@ -165,10 +162,10 @@ object EconomyBridge {
         currencyId: String? = null,
     ): EconomyTransactionResult {
         val provider = selectProvider(providerId, resolveCurrencyId(currencyId))
-            ?: return EconomyTransactionResult.fail("没有可用的经济后端", code = "NO_PROVIDER", suggestion = "检查 Vault / ExcellentEconomy / PlayerPoints 是否已安装", provider = "economy")
+            ?: return EconomyTransactionResult.fail(Lang.get("economy-bridge.no-provider"), code = "NO_PROVIDER", suggestion = Lang.get("economy-bridge.no-provider-suggestion"), provider = "economy")
         val currency = effectiveCurrency(provider, currencyId)
         if (provider.id == "excellenteconomy" && currency.isNullOrBlank()) {
-            return EconomyTransactionResult.fail("ExcellentEconomy 需要指定 currency", code = "CURRENCY_REQUIRED", suggestion = "传入 money / silver / gold 等货币ID", provider = provider.id)
+            return EconomyTransactionResult.fail(Lang.get("economy-bridge.currency-required"), code = "CURRENCY_REQUIRED", suggestion = Lang.get("economy-bridge.currency-required-suggestion"), provider = provider.id)
         }
         return provider.withdraw(player, amount, currency).copy(provider = provider.id)
     }
@@ -180,21 +177,14 @@ object EconomyBridge {
         currencyId: String? = null,
     ): EconomyTransactionResult {
         val provider = selectProvider(providerId, resolveCurrencyId(currencyId))
-            ?: return EconomyTransactionResult.fail("没有可用的经济后端", code = "NO_PROVIDER", suggestion = "检查 Vault / ExcellentEconomy / PlayerPoints 是否已安装", provider = "economy")
+            ?: return EconomyTransactionResult.fail(Lang.get("economy-bridge.no-provider"), code = "NO_PROVIDER", suggestion = Lang.get("economy-bridge.no-provider-suggestion"), provider = "economy")
         val currency = effectiveCurrency(provider, currencyId)
         if (provider.id == "excellenteconomy" && currency.isNullOrBlank()) {
-            return EconomyTransactionResult.fail("ExcellentEconomy 需要指定 currency", code = "CURRENCY_REQUIRED", suggestion = "传入 money / silver / gold 等货币ID", provider = provider.id)
+            return EconomyTransactionResult.fail(Lang.get("economy-bridge.currency-required"), code = "CURRENCY_REQUIRED", suggestion = Lang.get("economy-bridge.currency-required-suggestion"), provider = provider.id)
         }
         return provider.setBalance(player, amount, currency).copy(provider = provider.id)
     }
 
-    /**
-     * 解析 GUI money 条件，例如：
-     * - `>=100`（默认 provider + currency）
-     * - `money:>=100`
-     * - `vault:>=500`
-     * - `excellenteconomy:gold:>=50`
-     */
     fun parseMoneyRequirement(value: String): MoneyRequirement? {
         if (value.isBlank()) return null
 
@@ -231,7 +221,7 @@ object EconomyBridge {
     }
 
     fun diagnose(): DiagnosticResult<List<BridgeStatus>> =
-        DiagnosticResult.ok(bridgeStatuses(), "经济桥诊断完成", source = "economy")
+        DiagnosticResult.ok(bridgeStatuses(), Lang.get("economy-bridge.diagnose-complete"), source = "economy")
 
     private fun effectiveCurrency(provider: EconomyProvider, currencyId: String?): String? {
         val resolved = resolveCurrencyId(currencyId)

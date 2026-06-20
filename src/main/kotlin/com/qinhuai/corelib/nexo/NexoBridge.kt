@@ -7,6 +7,7 @@ object NexoBridge {
     private var nexoItemsClass: Class<*>? = null
     private var itemFromIdMethod: java.lang.reflect.Method? = null
     private var buildMethod: java.lang.reflect.Method? = null
+    private var idFromItemMethod: java.lang.reflect.Method? = null
 
     fun isAvailable(): Boolean {
         return try {
@@ -20,6 +21,18 @@ object NexoBridge {
             true
         } catch (e: Exception) {
             false
+        }
+    }
+
+    fun idFromItem(stack: ItemStack): String? {
+        if (!isAvailable()) return null
+        return try {
+            if (idFromItemMethod == null) {
+                idFromItemMethod = nexoItemsClass!!.getMethod("idFromItem", ItemStack::class.java)
+            }
+            idFromItemMethod!!.invoke(null, stack) as? String
+        } catch (e: Exception) {
+            null
         }
     }
 

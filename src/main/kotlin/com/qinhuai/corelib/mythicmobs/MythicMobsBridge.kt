@@ -4,6 +4,7 @@ import com.qinhuai.corelib.debug.BridgeDiagnostics
 import com.qinhuai.corelib.debug.BridgeStatus
 import com.qinhuai.corelib.debug.BridgeStatusRegistry
 import com.qinhuai.corelib.debug.DiagnosticResult
+import com.qinhuai.corelib.lang.Lang
 import com.qinhuai.corelib.reflection.ReflectionBridge
 import org.bukkit.inventory.ItemStack
 
@@ -56,9 +57,9 @@ object MythicMobsBridge {
     }
 
     fun status(): BridgeStatus = if (available == true) {
-        BridgeDiagnostics.available("MythicMobs", source = "MM", hint = "绑定模式=$bindMode")
+        BridgeDiagnostics.available("MythicMobs", source = "MM", hint = Lang.get("mythic-mobs-bridge.hint-bind-mode", "mode" to bindMode))
     } else {
-        BridgeDiagnostics.unavailable("MythicMobs", source = "MM", hint = "未绑定或反射失败", recoverable = true)
+        BridgeDiagnostics.unavailable("MythicMobs", source = "MM", hint = Lang.get("mythic-mobs-bridge.hint-unbound"), recoverable = true)
     }
 
     fun diagnose(): DiagnosticResult<BridgeStatus> = BridgeDiagnostics.diagnose("MythicMobs", isAvailable(), source = "MM", hint = "mode=$bindMode")
