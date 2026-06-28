@@ -19,6 +19,10 @@ object ServerCompat {
     const val MIN_JAVA_VERSION = 25
     const val MIN_MC_PATCH = 11
 
+    const val MAX_TESTED_MAJOR = 1
+    const val MAX_TESTED_MINOR = 21
+    val MAX_TESTED_LABEL = "1.21.x"
+
     val ATTR_MAX_HEALTH: Attribute = attribute("max_health", "generic.max_health")
     val ATTR_ATTACK_DAMAGE: Attribute = attribute("attack_damage", "generic.attack_damage")
     val ATTR_FOLLOW_RANGE: Attribute = attribute("follow_range", "generic.follow_range")
@@ -73,11 +77,11 @@ object ServerCompat {
         PlatformKind.UNKNOWN -> "Bukkit"
     }
 
-    fun validateServer(logger: Logger): String? {
+    fun validateServer(logger: Logger, strictVersionCheck: Boolean = false): String? {
         val javaError = validateJava()
         if (javaError != null) return javaError
 
-        val mcError = validateMinecraftVersion()
+        val mcError = validateMinecraftVersion(logger, strictVersionCheck)
         if (mcError != null) return mcError
 
         logger.info(
@@ -104,18 +108,22 @@ object ServerCompat {
         }
     }
 
-    fun validateMinecraftVersion(): String? {
-        val parts = parseBukkitVersion()
-            ?: return Lang.get("server-compat.mc-version-unrecognized", "patch" to MIN_MC_PATCH)
+    fun validateMinecraftVersion(logger: Logger, strictVersionCheck: Boolean = false): String? {
+        val parts = parseBukkitVersion() ?: return null
         val (major, minor, patch) = parts
-        if (major < 1) {
+        val tooOld = major < 1 ||
+            (major == 1 && minor < 21) ||
+            (major == 1 && minor == 21 && patch < MIN_MC_PATCH)
+        if (tooOld) {
             return Lang.get("server-compat.mc-version-too-low", "patch" to MIN_MC_PATCH, "current" to bukkitVersionLabel())
         }
-        if (major == 1 && minor < 21) {
-            return Lang.get("server-compat.mc-version-too-low", "patch" to MIN_MC_PATCH, "current" to bukkitVersionLabel())
-        }
-        if (major == 1 && minor == 21 && patch < MIN_MC_PATCH) {
-            return Lang.get("server-compat.mc-version-too-low", "patch" to MIN_MC_PATCH, "current" to bukkitVersionLabel())
+        val beyondTested = major > MAX_TESTED_MAJOR ||
+            (major == MAX_TESTED_MAJOR && minor > MAX_TESTED_MINOR)
+        if (beyondTested) {
+            if (strictVersionCheck) {
+                return Lang.get("server-compat.mc-untested-strict", "current" to bukkitVersionLabel(), "tested" to MAX_TESTED_LABEL)
+            }
+            logger.warning(Lang.get("server-compat.mc-untested-warn", "current" to bukkitVersionLabel(), "tested" to MAX_TESTED_LABEL))
         }
         return null
     }

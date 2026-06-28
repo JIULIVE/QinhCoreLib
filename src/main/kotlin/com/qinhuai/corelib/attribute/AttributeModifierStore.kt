@@ -8,12 +8,6 @@ object AttributeModifierStore {
 
     private val data = ConcurrentHashMap<UUID, CopyOnWriteArrayList<StatModifier>>()
 
-    /**
-     * 折叠结果缓存 —— 避免每次战斗 eff() 重新折叠全部限时修饰符。
-     * 命中条件：base 仍是同一引用（AttributeStatStore.totals 命中其自身缓存时返回同一 Map）
-     * 且尚未到任何限时修饰符的过期时刻。任一修饰符增删时整体作废（[invalidate]）。
-     * 槽位过滤路径（base 每次新建）天然不命中、自动回退重算，正确性不受影响。
-     */
     private class FoldEntry(
         val base: Map<String, Double>,
         val result: Map<String, Double>,

@@ -36,7 +36,8 @@ class QinhCoreLib : JavaPlugin() {
     }
 
     override fun onEnable() {
-        ServerCompat.validateServer(logger)?.let { reason ->
+        val strictVersion = config.getBoolean("compatibility.strict-version-check", false)
+        ServerCompat.validateServer(logger, strictVersion)?.let { reason ->
             logger.severe("[QinhCoreLib] $reason")
             server.pluginManager.disablePlugin(this)
             return

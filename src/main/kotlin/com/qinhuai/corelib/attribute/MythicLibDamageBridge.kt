@@ -4,14 +4,6 @@ import org.bukkit.Bukkit
 import org.bukkit.event.entity.EntityDamageEvent
 import java.lang.reflect.Method
 
-/**
- * 反射查询 MythicLib：判断一次伤害事件是否为「技能/法术伤害」(ML DamageType SKILL 或 MAGIC)。
- *
- * 用途：MM 技能伤害若以 cause=ENTITY_ATTACK 落地，会被 CoreLib 物理近战管线误当普通近战处理
- * (套物理增伤/暴击)。此桥让 CoreLib 据 ML 的伤害类型把技能伤害从物理管线隔离出去。
- * ML 对原版近战也会登记，但类型是 WEAPON/UNARMED，故只认 SKILL/MAGIC 不会误伤真近战。
- * MythicLib 缺失或任何反射失败 → 返回 false（退回现状，零回归）。
- */
 object MythicLibDamageBridge {
 
     private var resolved = false

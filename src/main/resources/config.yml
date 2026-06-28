@@ -7,6 +7,15 @@
 #   内置 built-in: zh_cn (简体中文) / en_US (English) / zh_tw (繁體中文) / ru_RU / fr_FR / vi_VN / es_ES
 language: zh_cn
 
+# 版本兼容
+compatibility:
+  # 严格版本检查：
+  #   false（默认，推荐）——向上兼容：服务端版本高于「已测试版本」时仅打印警告并照常启动，
+  #                        不会因为出了新版本就拒绝运行（避免「新版本用不了」）。
+  #   true ——严格模式：高于已测试版本直接拒绝启动（适合宁可不启动也不冒险的服主）。
+  #   注：低于最低支持版本(1.21.11)始终拒绝，与此开关无关。
+  strict-version-check: false
+
 database:
   # 数据库类型: sqlite 或 mysql
   type: sqlite

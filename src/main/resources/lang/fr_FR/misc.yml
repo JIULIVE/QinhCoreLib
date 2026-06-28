@@ -5,6 +5,8 @@ server-compat.kotlin-libraries-unsupported: "[Qinh] La plateforme actuelle est {
 server-compat.java-version-too-low: "Nécessite Java {min} ou supérieur (Purpur 26.2 nécessite JDK 25 ; actuel : {current})"
 server-compat.mc-version-unrecognized: "Impossible de reconnaître la version du serveur ; nécessite Minecraft 1.21.{patch} ou supérieur"
 server-compat.mc-version-too-low: "Nécessite Minecraft 1.21.{patch}+ (actuel : {current})"
+server-compat.mc-untested-warn: "Minecraft {current} est plus récent que la version testée (testé jusqu'à {tested}) ; démarré normalement — veuillez signaler tout problème. Pour refuser strictement les versions non testées, activez compatibility.strict-version-check dans config.yml."
+server-compat.mc-untested-strict: "Minecraft {current} est plus récent que la version testée (testé jusqu'à {tested}), et la vérification stricte de version (compatibility.strict-version-check) est activée. Désactivez-la pour démarrer normalement."
 text-utils.time-hms: "%dh%dm%ds"
 text-utils.time-ms: "%dm%ds"
 text-utils.time-s: "%ds"
