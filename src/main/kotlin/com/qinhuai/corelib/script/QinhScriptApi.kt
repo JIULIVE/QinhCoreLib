@@ -132,6 +132,26 @@ class QinhScriptApi(
     }
 
     @HostAccess.Export
+    fun buff(target: Any?, key: String, amount: Double, operation: String?, durationTicks: Long, source: String?): Boolean {
+        val entity = (target as? LivingEntity) ?: context.player ?: return false
+        if (key.isBlank() || !amount.isFinite()) return false
+        val op = com.qinhuai.corelib.attribute.ModifierOp.parse(operation)
+        val src = source?.trim()?.takeIf { it.isNotEmpty() } ?: "qcl_script:$scriptPath"
+        com.qinhuai.corelib.attribute.AttributeService.refreshBuff(
+            entity, key.trim().lowercase(), amount, src, durationTicks.coerceAtLeast(0L), op,
+        )
+        return true
+    }
+
+    @HostAccess.Export
+    fun removeBuff(target: Any?, source: String): Boolean {
+        val entity = (target as? LivingEntity) ?: context.player ?: return false
+        if (source.isBlank()) return false
+        com.qinhuai.corelib.attribute.AttributeService.removeModifierSource(entity, source.trim())
+        return true
+    }
+
+    @HostAccess.Export
     fun runSync(task: Runnable) {
         if (Bukkit.isPrimaryThread()) {
             task.run()

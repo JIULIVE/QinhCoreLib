@@ -19,8 +19,10 @@ object AttributeTickRunner {
     }
 
     private fun tick() {
+        AttributeModifierStore.purgeExpired()
         if (!AttributeService.isNativeActive()) return
         for (player in Bukkit.getOnlinePlayers()) {
+            NativeAttributeBackend.resyncBuffs(player)
             val totals = AttributeStatStore.totals(player.uniqueId)
             if (totals.isEmpty()) continue
             for ((attrKey, total) in totals) {

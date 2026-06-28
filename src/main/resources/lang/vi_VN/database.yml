@@ -1,6 +1,7 @@
 database-manager.restore-inventory-failed: "Khôi phục dữ liệu túi đồ thất bại: {error}"
 database-manager.sqlite-available: "Cơ sở dữ liệu SQLite khả dụng"
 database-manager.mysql-available: "Cơ sở dữ liệu MySQL khả dụng"
+database-manager.init-failed: "Khởi tạo cơ sở dữ liệu thất bại: {error}"
 database-manager.sqlite-initialized: "Cơ sở dữ liệu SQLite đã khởi tạo"
 database-manager.sqlite-not-initialized: "SQLite chưa khởi tạo"
 database-manager.mysql-initialized: "Cơ sở dữ liệu MySQL đã khởi tạo"

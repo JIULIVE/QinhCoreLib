@@ -21,7 +21,7 @@ physical_crit_damage:
 armor_penetration:
   display_name: "Xuyên Giáp"
   prefix: ""
-  suffix: ""
+  suffix: "%"
 projectile_damage:
   display_name: "Sát Thương Đạn Bay"
   prefix: ""
@@ -45,7 +45,7 @@ magic_crit_damage:
 magic_penetration:
   display_name: "Xuyên Kháng Phép"
   prefix: ""
-  suffix: ""
+  suffix: "%"
 skill_attack:
   display_name: "Tấn Công Kỹ Năng"
   prefix: ""

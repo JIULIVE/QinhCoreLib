@@ -15,8 +15,12 @@ object QinhItemsItemSource : ItemSource {
         if (!isAvailable()) return null
         return try {
             val registry = Class.forName("com.qinhuai.items.item.QinhItemRegistry")
-            registry.getMethod("create", String::class.java, Int::class.javaPrimitiveType)
-                .invoke(null, id, amount) as? ItemStack
+            val withFlags = runCatching {
+                registry.getMethod("createFromReference", String::class.java, Int::class.javaPrimitiveType)
+            }.getOrNull()
+            val method = withFlags
+                ?: registry.getMethod("create", String::class.java, Int::class.javaPrimitiveType)
+            method.invoke(null, id, amount) as? ItemStack
         } catch (_: Throwable) {
             null
         }

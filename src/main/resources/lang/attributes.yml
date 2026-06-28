@@ -52,7 +52,7 @@ physical_crit_damage:
 armor_penetration:
   display_name: "护甲穿透"
   prefix: ""
-  suffix: ""
+  suffix: "%"
 projectile_damage:
   display_name: "投掷物增伤"
   prefix: ""
@@ -78,7 +78,7 @@ magic_crit_damage:
 magic_penetration:
   display_name: "法术穿透"
   prefix: ""
-  suffix: ""
+  suffix: "%"
 
 # ===== 技能 =====
 skill_attack:

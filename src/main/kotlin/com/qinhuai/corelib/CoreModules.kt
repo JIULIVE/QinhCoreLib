@@ -116,6 +116,19 @@ object CustomBlockModule : AbstractModule("CustomBlock") {
 
 object DatabaseModule : AbstractModule("Database") {
     override val priority: Int = 5
+
+    override fun load() {
+        com.qinhuai.corelib.database.DatabaseManager.init()
+        if (com.qinhuai.corelib.database.DatabaseManager.isReady()) {
+            com.qinhuai.corelib.database.KvStore.ensureTable()
+            val backend = if (com.qinhuai.corelib.database.DatabaseManager.isMySQL()) "MySQL" else "SQLite"
+            StartupReporter.hookedBridge(backend, Lang.get("core-modules.role-database"))
+        }
+    }
+
+    override fun unload() {
+        com.qinhuai.corelib.database.DatabaseManager.close()
+    }
 }
 
 object ReflectionModule : AbstractModule("Reflection") {

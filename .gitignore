@@ -1,0 +1,20 @@
+# Build
+target/
+build/
+*.jar
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# Local scratch / notes
+PLAN.md
+SPIGOTMC*.txt
+SPIGOTMC*.md
+
+# OS
+.DS_Store
+Thumbs.db

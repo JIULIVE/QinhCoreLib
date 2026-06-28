@@ -16,7 +16,6 @@ object AttributeBook {
         meta.title(TextUtil.toComponent(Lang.get("attribute-book.title")))
         meta.author(TextUtil.toComponent(Lang.get("attribute-book.author")))
 
-        val totals = AttributeService.totals(player)
         val byCat = AttributeRegistry.all().groupBy { it.category }
         val pages = mutableListOf<Component>()
 
@@ -32,7 +31,7 @@ object AttributeBook {
             val sb = StringBuilder()
             sb.append("§0§l$cat\n§8§m                \n")
             for (def in defs) {
-                val v = totals[def.key] ?: 0.0
+                val v = AttributeService.displayValue(player, def)
                 if (v != 0.0) {
                     sb.append("§2${def.displayName}§0: §1${fmt(v)}\n")
                 } else {

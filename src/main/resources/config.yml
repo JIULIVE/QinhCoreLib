@@ -60,6 +60,94 @@ attribute:
   #   auto          —— 有可用的第三方属性后端则优先用它，否则回退 native
   backend: native
 
+# 战斗体验
+combat:
+  # 战斗属性聊天提示：暴击/闪避/格挡/吸血等属性触发时在聊天栏发文字提示（attributes.yml 各属性的 message）
+  #   默认关闭——伤害飘字已经能直观显示暴击等，开了聊天容易刷屏。想要文字播报再开。
+  attribute-messages:
+    enabled: false
+
+  # 横扫攻击伤害：原版横扫对副目标固定只有 1 点（除非武器带「横扫之刃」附魔）。
+  #   开启后由 CoreLib 把横扫副目标伤害重算为「攻击力 × factor」，再走正常增伤/暴击/防御管线，
+  #   让横扫吃满攻击力——更符合 RPG 手感。关闭则保持原版逻辑。
+  sweep:
+    scale-with-attack: true
+    # 横扫相对一次正常命中的比例（0.5 = 攻击力的一半）
+    factor: 0.5
+
+  # 法术吸血（spell_vampirism 属性）：玩家造成法术/技能伤害时，按 spell_vampirism 比例回血。
+  #   纯技能伤害发生在 MythicMobs 内部、不进 CoreLib 物理战斗管线，故这里改为监听最终伤害事件来吸血。
+  spell-vampirism:
+    # 哪些 DamageCause 算「法术伤害」可触发法术吸血。生态约定技能伤害走 MAGIC（与飘字判定一致），
+    #   故默认 MAGIC。若你的技能/药水伤害用别的 cause（如 CUSTOM/WITHER/POISON），按需补进列表。
+    magic-causes:
+      - MAGIC
+    # 近战/弹射物命中时【附带的元素伤害】是否也触发法术吸血（这部分由 CoreLib 物理管线精确算出）。
+    leech-from-elemental: true
+
+  # 技能伤害隔离：若 MM 的 damage{} 以 cause=ENTITY_ATTACK 落地，默认会被 CoreLib 当成物理近战处理
+  #   （误套物理增伤/暴击）。开启后 CoreLib 借 MythicLib 的伤害类型(SKILL/MAGIC)把技能伤害从物理管线
+  #   隔离出去——不当近战算，并改由法术伤害链(法术吸血等)处理。需要装了 MythicLib(MM 自带依赖)；
+  #   没装或识别失败则自动退回原行为。最佳实践仍是把技能伤害配成 MAGIC cause，本项是兜底。
+  isolate-mythiclib-skill-damage: true
+
+  # 伤害飘字：受击时在实体头顶弹出伤害数字（原生 TextDisplay，无需 NMS / 其它插件）
+  #   按伤害类型显示不同符号(物理/魔法/火焰…)，暴击用加粗符号 + 放大字号高亮
+  #   （类型判定来自伤害来源 cause：近战/弹射=物理，技能/药水=魔法；QS/MM 技能伤害走 MAGIC cause 即归魔法）
+  #   崩溃残留的飘字会在下次启动 20 tick 后自动清理
+  damage-indicators:
+    # 总开关：false 完全关闭飘字
+    enabled: true
+    # 玩家受击时是否也显示（false 则只在你打的怪/目标头顶显示）
+    show-on-players: true
+    # 元素分色：一次命中含物理+火/冰等多种分量时，合成一行多色飘字（如「⚔10 ♨5」物理白、火焰橙）
+    #   true=按分量分色显示（推荐）；false=只显示一个合计数字（旧行为）。无元素伤害时本项不影响。
+    merge-elements: true
+    # 低于此伤害不显示，过滤刷屏
+    min-damage: 0.5
+    # 飘字存活时长（tick）与刷新间隔（tick，越大越省、越小越顺，3 比较平衡）
+    lifespan: 20
+    tick-period: 3
+    # 生成高度：实体身高的百分比（0.55=半身高，调低更贴近脚下，调高更靠头顶）
+    spawn-height: 0.55
+    # 抛射物理：初速上抛 / 重力 / 沿攻击方向横向散开。设 0 可让飘字几乎不动
+    initial-upward-velocity: 0.5
+    gravity: 1.0
+    radial-velocity: 1.0
+    # 字号（整体缩放，1.0=原版大小），暴击额外放大
+    scale: 1.2
+    crit-scale: 1.7
+    # 数字格式（java DecimalFormat）
+    decimal-format: "0.#"
+    # 文本模板：{icon}=类型符号，{value}=伤害数值。支持 & 色码与 MiniMessage。
+    #   普通命中用 format，暴击用 crit-format，治疗用 heal-format
+    format: "{icon} &f{value}"
+    crit-format: "{icon} &c&l{value}"
+    heal-format: "{icon} &a&l{value}"
+    # 元素分量模板（merge-elements 开启时各元素那一段用它）：{color}=该元素在 elements.yml 里配的颜色
+    element-format: "{icon} {color}{value}"
+    # 各伤害类型的符号（normal=普通，crit=暴击）。可随意改成你喜欢的字符/MiniMessage；
+    #   留空 "" 则该类型不显示符号（只显示数字）。type 与上面 cause 归类对应：
+    #   physical 物理 / magic 魔法 / fire 火焰 / heal 治疗 / other 其它
+    #   元素分量的符号按元素 id 取（如 fire/ice/lightning，对应 elements.yml 里的元素）；
+    #   未单独配置的元素回退到 other 符号，颜色用 elements.yml 各元素的 color。
+    icons:
+      physical:
+        normal: "&f⚔"
+        crit: "&c&l⚔"
+      magic:
+        normal: "&b✦"
+        crit: "&b&l✦"
+      fire:
+        normal: "&6♨"
+        crit: "&6&l♨"
+      heal:
+        normal: "&a✚"
+        crit: "&a&l✚"
+      other:
+        normal: "&7◆"
+        crit: "&7&l◆"
+
 # 模块配置 (可以禁用不需要的模块)
 modules:
   config: true

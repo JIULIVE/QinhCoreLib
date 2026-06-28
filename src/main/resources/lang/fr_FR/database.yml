@@ -1,6 +1,7 @@
 database-manager.restore-inventory-failed: "Échec de la restauration des données d'inventaire : {error}"
 database-manager.sqlite-available: "Base de données SQLite disponible"
 database-manager.mysql-available: "Base de données MySQL disponible"
+database-manager.init-failed: "Échec de l'initialisation de la base de données : {error}"
 database-manager.sqlite-initialized: "Base de données SQLite initialisée"
 database-manager.sqlite-not-initialized: "SQLite non initialisé"
 database-manager.mysql-initialized: "Base de données MySQL initialisée"

@@ -28,6 +28,7 @@ import org.incendo.cloud.context.CommandContext
 import org.incendo.cloud.description.Description
 import org.incendo.cloud.paper.LegacyPaperCommandManager
 import org.incendo.cloud.parser.standard.StringParser.stringParser
+import org.incendo.cloud.suggestion.BlockingSuggestionProvider
 
 object QCLCommands {
 
@@ -151,7 +152,134 @@ object QCLCommands {
                 .optional("value", stringParser())
                 .handler { ctx: CommandContext<CommandSender> -> mobAttr(ctx) },
         )
+
+        manager.command(
+            root.literal("buff")
+                .permission("qcl.admin")
+                .required("player", stringParser(), playerSuggestions)
+                .required("attr", stringParser(), attrSuggestions)
+                .required("amount", stringParser())
+                .optional("op", stringParser(), opSuggestions)
+                .optional("seconds", stringParser())
+                .handler { ctx: CommandContext<CommandSender> -> addBuff(ctx) },
+        )
+
+        manager.command(
+            root.literal("buffs")
+                .permission("qcl.admin")
+                .required("player", stringParser(), playerSuggestions)
+                .handler { ctx: CommandContext<CommandSender> -> listBuffs(ctx) },
+        )
+
+        manager.command(
+            root.literal("unbuff")
+                .permission("qcl.admin")
+                .required("player", stringParser(), playerSuggestions)
+                .optional("source", stringParser(), buffSourceSuggestions)
+                .handler { ctx: CommandContext<CommandSender> -> clearBuff(ctx) },
+        )
     }
+
+    private val playerSuggestions = BlockingSuggestionProvider.Strings<CommandSender> { _, _ ->
+        Bukkit.getOnlinePlayers().map { it.name }
+    }
+
+    private val attrSuggestions = BlockingSuggestionProvider.Strings<CommandSender> { _, _ ->
+        AttributeRegistry.all().map { it.key }
+    }
+
+    private val opSuggestions = BlockingSuggestionProvider.Strings<CommandSender> { _, _ ->
+        listOf("flat", "relative", "multiply")
+    }
+
+    private val buffSourceSuggestions = BlockingSuggestionProvider.Strings<CommandSender> { ctx, _ ->
+        val target = Bukkit.getPlayerExact(runCatching { ctx.get<String>("player") }.getOrNull() ?: "")
+        if (target == null) listOf(DEBUG_BUFF_SOURCE)
+        else (AttributeService.activeModifiers(target).map { it.source }.distinct() + DEBUG_BUFF_SOURCE).distinct()
+    }
+
+    private const val DEBUG_BUFF_SOURCE = "qcl_debug"
+
+    private fun addBuff(ctx: CommandContext<CommandSender>) {
+        val sender = ctx.sender()
+        val target = Bukkit.getPlayerExact(ctx.get<String>("player"))
+        if (target == null) {
+            Lang.send(sender, "qcl-commands.buff-player-not-found", "player" to ctx.get<String>("player"))
+            return
+        }
+        val attr = ctx.get<String>("attr")
+        val amount = ctx.get<String>("amount").toDoubleOrNull()
+        if (amount == null) {
+            Lang.send(sender, "qcl-commands.buff-usage")
+            return
+        }
+        val op = com.qinhuai.corelib.attribute.ModifierOp.parse(runCatching { ctx.get<String>("op") }.getOrNull())
+        val seconds = runCatching { ctx.get<String>("seconds") }.getOrNull()?.toLongOrNull() ?: 0L
+        val ticks = seconds * 20L
+        val id = AttributeService.buff(target, attr, amount, DEBUG_BUFF_SOURCE, ticks, op)
+        val dur = if (seconds > 0) Lang.get("qcl-commands.buff-seconds", "seconds" to seconds) else Lang.get("qcl-commands.buff-permanent")
+        Lang.send(
+            sender,
+            "qcl-commands.buff-applied",
+            "name" to target.name,
+            "attr" to attr,
+            "op" to op.name.lowercase(),
+            "amount" to fmtNum(amount),
+            "dur" to dur,
+            "id" to id.take(8),
+        )
+        Lang.send(sender, "qcl-commands.buff-total", "attr" to attr, "total" to fmtNum(AttributeService.total(target, attr)))
+    }
+
+    private fun listBuffs(ctx: CommandContext<CommandSender>) {
+        val sender = ctx.sender()
+        val target = Bukkit.getPlayerExact(ctx.get<String>("player"))
+        if (target == null) {
+            Lang.send(sender, "qcl-commands.buff-player-not-found", "player" to ctx.get<String>("player"))
+            return
+        }
+        val mods = AttributeService.activeModifiers(target)
+        TextUtil.sendColored(sender, "§6§m----------------------------------")
+        Lang.send(sender, "qcl-commands.buffs-title", "name" to target.name, "count" to mods.size)
+        if (mods.isEmpty()) {
+            Lang.send(sender, "qcl-commands.buffs-empty")
+        } else {
+            val now = System.currentTimeMillis()
+            for (m in mods) {
+                val dur = if (m.isTemporary) Lang.get("qcl-commands.buffs-remaining", "sec" to (m.remainingMillis(now) / 1000)) else Lang.get("qcl-commands.buffs-permanent-tag")
+                Lang.send(
+                    sender,
+                    "qcl-commands.buffs-line",
+                    "key" to m.key,
+                    "op" to m.operation.name.lowercase(),
+                    "amount" to fmtNum(m.amount),
+                    "source" to m.source,
+                    "dur" to dur,
+                )
+            }
+        }
+        TextUtil.sendColored(sender, "§6§m----------------------------------")
+    }
+
+    private fun clearBuff(ctx: CommandContext<CommandSender>) {
+        val sender = ctx.sender()
+        val target = Bukkit.getPlayerExact(ctx.get<String>("player"))
+        if (target == null) {
+            Lang.send(sender, "qcl-commands.buff-player-not-found", "player" to ctx.get<String>("player"))
+            return
+        }
+        val source = runCatching { ctx.get<String>("source") }.getOrNull()
+        if (source == null) {
+            AttributeService.removeModifierSource(target, DEBUG_BUFF_SOURCE)
+            Lang.send(sender, "qcl-commands.unbuff-debug", "name" to target.name, "source" to DEBUG_BUFF_SOURCE)
+        } else {
+            AttributeService.removeModifierSource(target, source)
+            Lang.send(sender, "qcl-commands.unbuff-source", "name" to target.name, "source" to source)
+        }
+    }
+
+    private fun fmtNum(v: Double): String =
+        if (v == v.toLong().toDouble()) v.toLong().toString() else String.format("%.2f", v)
 
     private fun mobAttr(ctx: CommandContext<CommandSender>) {
         val sender = ctx.sender()
@@ -315,7 +443,7 @@ object QCLCommands {
         val shown = LinkedHashSet<String>()
         var any = false
         for (def in AttributeRegistry.all()) {
-            val v = totals[def.key]?.takeIf { it != 0.0 } ?: continue
+            val v = AttributeService.displayValue(target, def).takeIf { it != 0.0 } ?: continue
             shown.add(def.key)
             any = true
             val c = when {

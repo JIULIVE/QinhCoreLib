@@ -45,14 +45,111 @@ object AttributeService {
     fun apply(entity: LivingEntity, source: String, entries: List<AttributeEntry>): Boolean =
         active().apply(entity, source, entries)
 
+    fun apply(entity: LivingEntity, source: String, entries: List<AttributeEntry>, slot: ModifierSlot): Boolean {
+        val ok = active().apply(entity, source, entries)
+        if (isNativeActive()) AttributeStatStore.tagSlot(entity.uniqueId, source, slot)
+        return ok
+    }
+
+    fun totalsForHand(entity: LivingEntity, hand: ActionHand): Map<String, Double> {
+        val base = AttributeStatStore.totals(entity.uniqueId, hand)
+        if (!AttributeModifierStore.has(entity.uniqueId)) return base
+        return AttributeModifierStore.foldTotals(entity.uniqueId, base, hand)
+    }
+
     fun remove(entity: LivingEntity, source: String): Boolean =
         active().remove(entity, source)
 
-    fun total(entity: LivingEntity, key: String): Double =
-        active().total(entity, key)
+    fun total(entity: LivingEntity, key: String): Double {
+        val base = active().total(entity, key)
+        if (!AttributeModifierStore.has(entity.uniqueId)) return base
+        val def = AttributeRegistry.resolve(key)
+        if (vanillaBacked(def)) return base
+        val combined = AttributeModifierStore.combine(entity.uniqueId, key, base)
+        if (combined == base) return base
+        return def?.clamp(combined) ?: combined
+    }
 
-    fun totals(entity: LivingEntity): Map<String, Double> =
-        active().totals(entity)
+    fun totals(entity: LivingEntity): Map<String, Double> {
+        val base = active().totals(entity)
+        if (!AttributeModifierStore.has(entity.uniqueId)) return base
+        val uuid = entity.uniqueId
+        val out = LinkedHashMap<String, Double>(base)
+        for (key in AttributeModifierStore.activeKeys(uuid)) out.putIfAbsent(key, 0.0)
+        val result = LinkedHashMap<String, Double>(out.size)
+        for ((key, value) in out) {
+            val def = AttributeRegistry.resolve(key)
+            if (vanillaBacked(def)) {
+                result[key] = value
+                continue
+            }
+            val combined = AttributeModifierStore.combine(uuid, key, value)
+            result[key] = if (combined == value) value else (def?.clamp(combined) ?: combined)
+        }
+        return result
+    }
+
+    private fun vanillaBacked(def: com.qinhuai.corelib.attribute.AttributeDef?): Boolean =
+        def != null && isNativeActive() && NativeAttributeBackend.isVanillaMapped(def)
+
+    private fun syncVanilla(entity: LivingEntity) {
+        if (isNativeActive()) NativeAttributeBackend.resyncBuffs(entity)
+    }
+
+    fun addModifier(entity: LivingEntity, modifier: StatModifier): String {
+        val id = AttributeModifierStore.add(entity.uniqueId, modifier)
+        syncVanilla(entity)
+        return id
+    }
+
+    fun buff(
+        entity: LivingEntity,
+        key: String,
+        amount: Double,
+        source: String,
+        durationTicks: Long = 0L,
+        operation: ModifierOp = ModifierOp.FLAT,
+    ): String {
+        val id = AttributeModifierStore.addTimed(entity.uniqueId, key, amount, operation, source, durationTicks)
+        syncVanilla(entity)
+        return id
+    }
+
+    fun refreshBuff(
+        entity: LivingEntity,
+        key: String,
+        amount: Double,
+        source: String,
+        durationTicks: Long = 0L,
+        operation: ModifierOp = ModifierOp.FLAT,
+    ): String {
+        AttributeModifierStore.removeSourceKey(entity.uniqueId, source, key)
+        val id = AttributeModifierStore.addTimed(entity.uniqueId, key, amount, operation, source, durationTicks)
+        syncVanilla(entity)
+        return id
+    }
+
+    fun removeModifier(entity: LivingEntity, id: String): Boolean {
+        val removed = AttributeModifierStore.remove(entity.uniqueId, id)
+        if (removed) syncVanilla(entity)
+        return removed
+    }
+
+    fun removeModifierSource(entity: LivingEntity, source: String): Boolean {
+        val removed = AttributeModifierStore.removeSource(entity.uniqueId, source)
+        if (removed) syncVanilla(entity)
+        return removed
+    }
+
+    fun activeModifiers(entity: LivingEntity): List<StatModifier> =
+        AttributeModifierStore.active(entity.uniqueId)
+
+    fun displayValue(entity: LivingEntity, def: AttributeDef): Double {
+        if (isNativeActive()) {
+            NativeAttributeBackend.vanillaEffective(entity, def)?.let { return it }
+        }
+        return total(entity, def.key)
+    }
 
     fun combatPower(player: Player): Double {
         var sum = 0.0
@@ -80,7 +177,9 @@ object AttributeService {
 
     fun clearPlayer(player: UUID) {
         AttributeStatStore.clear(player)
+        AttributeModifierStore.clear(player)
         lastEquipActive.remove(player)
+        if (isNativeActive()) org.bukkit.Bukkit.getPlayer(player)?.let { NativeAttributeBackend.resyncBuffs(it) }
     }
 
     private fun fireEquip(player: Player, attrKey: String, hook: String) {

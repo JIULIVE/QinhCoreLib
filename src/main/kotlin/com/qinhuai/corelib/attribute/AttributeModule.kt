@@ -11,7 +11,7 @@ object AttributeModule : AbstractModule("Attribute") {
 
     private val builtinScripts = listOf(
         "defense.js", "dodge.js", "block.js", "lifesteal.js", "thorns.js",
-        "damage_reduction.js", "parry.js",
+        "damage_reduction.js", "parry.js", "reflection.js", "spell_vampirism.js",
     )
 
     override fun load() {
@@ -25,6 +25,8 @@ object AttributeModule : AbstractModule("Attribute") {
         MobAttributeMapping.load()
         AttributeService.init()
         applyBackendConfig()
+        DamageIndicators.reload()
+        AttributeCombatListener.reload()
     }
 
     fun reloadConfig() {
@@ -34,6 +36,8 @@ object AttributeModule : AbstractModule("Attribute") {
         AttributeLang.load()
         MobAttributeMapping.load()
         applyBackendConfig()
+        DamageIndicators.reload()
+        AttributeCombatListener.reload()
     }
 
     private fun applyBackendConfig() {
@@ -46,6 +50,8 @@ object AttributeModule : AbstractModule("Attribute") {
     override fun enable() {
         extractBuiltinScripts()
         QinhCoreLib.instance.server.pluginManager.registerEvents(AttributeCombatListener, QinhCoreLib.instance)
+        QinhCoreLib.instance.server.pluginManager.registerEvents(DamageIndicators, QinhCoreLib.instance)
+        org.bukkit.Bukkit.getScheduler().runTaskLater(QinhCoreLib.instance, Runnable { DamageIndicators.clearOrphans() }, 20L)
         AttributeTickRunner.start()
         MythicMobAttributeHook.tryRegister()
         com.qinhuai.corelib.placeholder.PapiBridge.register(
@@ -57,6 +63,8 @@ object AttributeModule : AbstractModule("Attribute") {
     override fun disable() {
         AttributeTickRunner.stop()
         HandlerList.unregisterAll(AttributeCombatListener)
+        HandlerList.unregisterAll(DamageIndicators)
+        DamageIndicators.clearOrphans()
     }
 
     private fun extractBuiltinScripts() {

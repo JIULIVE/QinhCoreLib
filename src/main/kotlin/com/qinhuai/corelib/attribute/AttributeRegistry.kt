@@ -13,24 +13,29 @@ object AttributeRegistry {
     private val byKey = linkedMapOf<String, AttributeDef>()
     private val byDisplay = linkedMapOf<String, AttributeDef>()
     private val byDamageType = linkedMapOf<DamageType, AttributeDef>()
+    private val byAlias = linkedMapOf<String, AttributeDef>()
 
     fun reset() {
         byKey.clear()
         byDisplay.clear()
         byDamageType.clear()
+        byAlias.clear()
         BuiltinAttributes.all().forEach { register(it) }
+        AttributeStatStore.invalidateAll()
     }
 
     fun register(def: AttributeDef) {
         byKey[def.key.trim().lowercase()] = def
         byDisplay[def.displayName.trim()] = def
         def.damageType?.let { byDamageType.putIfAbsent(it, def) }
+        def.vanillaKey?.trim()?.lowercase()?.let { if (it != def.key.trim().lowercase()) byAlias.putIfAbsent(it, def) }
+        def.itemAttribute?.trim()?.lowercase()?.let { if (it != def.key.trim().lowercase()) byAlias.putIfAbsent(it, def) }
     }
 
     fun resolve(token: String): AttributeDef? {
         val t = token.trim()
         if (t.isEmpty()) return null
-        return byKey[t.lowercase()] ?: byDisplay[t]
+        return byKey[t.lowercase()] ?: byDisplay[t] ?: byAlias[t.lowercase()]
     }
 
     fun all(): Collection<AttributeDef> = byKey.values
@@ -116,6 +121,7 @@ object AttributeRegistry {
 
     private val VALID_HOOKS = setOf(
         AttributeHooks.ON_DAMAGE_DEALT,
+        AttributeHooks.ON_MAGIC_DAMAGE_DEALT,
         AttributeHooks.ON_DAMAGE_TAKEN,
         AttributeHooks.ON_EQUIP,
         AttributeHooks.ON_UNEQUIP,

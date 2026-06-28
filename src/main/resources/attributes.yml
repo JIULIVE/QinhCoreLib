@@ -49,6 +49,8 @@
 #   qcl.heal(amount)                                    治疗自己
 #   qcl.damage(entity, amount)                          对实体造成伤害
 #   qcl.addPotion(entity, "SLOWNESS", ticks, amplifier) 施加药水效果
+#   qcl.buff(entity, "physical_damage", 0.25, "flat", 200, "rage")   限时属性加成(运算flat/relative/multiply;ticks;分组source)
+#   qcl.removeBuff(entity, "rage")                      移除该分组的属性加成
 #   qcl.placeholder(text) / qcl.logInfo(msg) / qcl.itemGive(ref, amount) ...
 #
 # ------------------------------------------------------------
