@@ -15,7 +15,13 @@ class QinhDamageEvent(val metadata: DamageMetadata) : Event(), Cancellable {
             metadata.finalDamage = value
         }
 
+    @JvmOverloads
+    fun addPacket(value: Double, damageType: DamageType, element: String? = null, crit: Boolean = false, source: String? = null) =
+        metadata.addPacket(value, damageType, element, crit, source)
+
     fun scaleAll(factor: Double) = metadata.scaleAll(factor)
+
+    fun scaleType(damageType: DamageType, factor: Double) = metadata.scaleType(damageType, factor)
 
     fun scaleElement(elementId: String, factor: Double) = metadata.scaleElement(elementId, factor)
 
